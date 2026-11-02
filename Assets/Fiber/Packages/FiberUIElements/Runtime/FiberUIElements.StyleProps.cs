@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 using Signals;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Fiber.UIElements
 {
@@ -9,10 +9,10 @@ namespace Fiber.UIElements
     // Implicit operators can't convert more than 1 step.
     public struct PositionProp
     {
-        public SignalProp<StyleEnum<Position>> SignalProp { get; private set; }
-        public readonly bool IsEmpty { get => SignalProp.IsEmpty; }
-        public readonly bool IsValue { get => SignalProp.IsValue; }
-        public readonly bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Position>> SignalProp { get; }
+        public readonly bool IsEmpty => SignalProp.IsEmpty;
+        public readonly bool IsValue => SignalProp.IsValue;
+        public readonly bool IsSignal => SignalProp.IsSignal;
 
         public PositionProp(StyleEnum<Position> value)
         {
@@ -41,27 +41,36 @@ namespace Fiber.UIElements
             return new PositionProp(signal);
         }
 
-        public readonly StyleEnum<Position> Get() => SignalProp.Get();
+        public readonly StyleEnum<Position> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopPositionProp
     {
-        public WorkLoopSignalProp<StyleEnum<Position>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Position>> WorkLoopSignalProp { get; }
 
         public WorkLoopPositionProp(PositionProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Position>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Position> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Position> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleLengthProp
     {
-        public SignalProp<StyleLength> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleLength> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleLengthProp(StyleLength value)
         {
@@ -96,27 +105,58 @@ namespace Fiber.UIElements
             return new StyleLengthProp(signal);
         }
 
-        public StyleLength Get() => SignalProp.Get();
+        public StyleLength Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleLengthProp
     {
-        public WorkLoopSignalProp<StyleLength> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleLength> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleLengthProp(StyleLengthProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleLength>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleLength Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleLength Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
+    }
+
+    public struct WorkLoopStyleMaterialDefinitionProp
+    {
+        public WorkLoopSignalProp<StyleMaterialDefinition> WorkLoopSignalProp { get; }
+
+        public bool IsEmpty => WorkLoopSignalProp.IsEmpty;
+        public bool IsValue => WorkLoopSignalProp.IsValue;
+        public bool IsSignal => WorkLoopSignalProp.IsSignal;
+
+        public WorkLoopStyleMaterialDefinitionProp(StyleMaterialDefinitionProp prop)
+        {
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleMaterialDefinition>(prop.SignalProp);
+        }
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleMaterialDefinition Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleFloatProp
     {
-        public SignalProp<StyleFloat> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleFloat> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleFloatProp(StyleFloat value)
         {
@@ -145,27 +185,36 @@ namespace Fiber.UIElements
             return new StyleFloatProp(signal);
         }
 
-        public StyleFloat Get() => SignalProp.Get();
+        public StyleFloat Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleFloatProp
     {
-        public WorkLoopSignalProp<StyleFloat> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleFloat> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleFloatProp(StyleFloatProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleFloat>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleFloat Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleFloat Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleColorProp
     {
-        public SignalProp<StyleColor> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleColor> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleColorProp(StyleColor value)
         {
@@ -194,27 +243,36 @@ namespace Fiber.UIElements
             return new StyleColorProp(signal);
         }
 
-        public StyleColor Get() => SignalProp.Get();
+        public StyleColor Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleColorProp
     {
-        public WorkLoopSignalProp<StyleColor> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleColor> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleColorProp(StyleColorProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleColor>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleColor Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleColor Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct DisplayStyleProp
     {
-        public SignalProp<StyleEnum<DisplayStyle>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<DisplayStyle>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public DisplayStyleProp(StyleEnum<DisplayStyle> value)
         {
@@ -243,24 +301,33 @@ namespace Fiber.UIElements
             return new DisplayStyleProp(signal);
         }
 
-        public StyleEnum<DisplayStyle> Get() => SignalProp.Get();
+        public StyleEnum<DisplayStyle> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopDisplayStyleProp
     {
-        public WorkLoopSignalProp<StyleEnum<DisplayStyle>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<DisplayStyle>> WorkLoopSignalProp { get; }
 
         public WorkLoopDisplayStyleProp(DisplayStyleProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<DisplayStyle>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<DisplayStyle> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<DisplayStyle> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct FlexDirectionProp
     {
-        public SignalProp<StyleEnum<FlexDirection>> SignalProp { get; private set; }
+        public SignalProp<StyleEnum<FlexDirection>> SignalProp { get; }
         public readonly bool IsEmpty => SignalProp.IsEmpty;
         public readonly bool IsValue => SignalProp.IsValue;
         public readonly bool IsSignal => SignalProp.IsSignal;
@@ -292,27 +359,36 @@ namespace Fiber.UIElements
             return new FlexDirectionProp(signal);
         }
 
-        public readonly StyleEnum<FlexDirection> Get() => SignalProp.Get();
+        public readonly StyleEnum<FlexDirection> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopFlexDirectionProp
     {
-        public WorkLoopSignalProp<StyleEnum<FlexDirection>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<FlexDirection>> WorkLoopSignalProp { get; }
 
         public WorkLoopFlexDirectionProp(FlexDirectionProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<FlexDirection>>(prop.SignalProp);
         }
-        public readonly bool Check() => WorkLoopSignalProp.Check();
-        public readonly StyleEnum<FlexDirection> Get() => WorkLoopSignalProp.Get();
+        public readonly bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public readonly StyleEnum<FlexDirection> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct JustifyProp
     {
-        public SignalProp<StyleEnum<Justify>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Justify>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public JustifyProp(StyleEnum<Justify> value)
         {
@@ -341,27 +417,36 @@ namespace Fiber.UIElements
             return new JustifyProp(signal);
         }
 
-        public StyleEnum<Justify> Get() => SignalProp.Get();
+        public StyleEnum<Justify> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopJustifyProp
     {
-        public WorkLoopSignalProp<StyleEnum<Justify>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Justify>> WorkLoopSignalProp { get; }
 
         public WorkLoopJustifyProp(JustifyProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Justify>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Justify> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Justify> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct AlignProp
     {
-        public SignalProp<StyleEnum<Align>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Align>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public AlignProp(StyleEnum<Align> value)
         {
@@ -390,27 +475,36 @@ namespace Fiber.UIElements
             return new AlignProp(signal);
         }
 
-        public StyleEnum<Align> Get() => SignalProp.Get();
+        public StyleEnum<Align> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopAlignProp
     {
-        public WorkLoopSignalProp<StyleEnum<Align>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Align>> WorkLoopSignalProp { get; }
 
         public WorkLoopAlignProp(AlignProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Align>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Align> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Align> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct WrapProp
     {
-        public SignalProp<StyleEnum<Wrap>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Wrap>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public WrapProp(StyleEnum<Wrap> value)
         {
@@ -439,27 +533,36 @@ namespace Fiber.UIElements
             return new WrapProp(signal);
         }
 
-        public StyleEnum<Wrap> Get() => SignalProp.Get();
+        public StyleEnum<Wrap> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopWrapProp
     {
-        public WorkLoopSignalProp<StyleEnum<Wrap>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Wrap>> WorkLoopSignalProp { get; }
 
         public WorkLoopWrapProp(WrapProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Wrap>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Wrap> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Wrap> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleFontProp
     {
-        public SignalProp<StyleFont> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleFont> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleFontProp(StyleFont value)
         {
@@ -486,27 +589,36 @@ namespace Fiber.UIElements
             return new StyleFontProp(signal);
         }
 
-        public StyleFont Get() => SignalProp.Get();
+        public StyleFont Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleFontProp
     {
-        public WorkLoopSignalProp<StyleFont> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleFont> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleFontProp(StyleFontProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleFont>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleFont Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleFont Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleFontDefinitionProp
     {
-        public SignalProp<StyleFontDefinition> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleFontDefinition> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleFontDefinitionProp(StyleFontDefinition value)
         {
@@ -538,27 +650,36 @@ namespace Fiber.UIElements
             return new StyleFontDefinitionProp(signal);
         }
 
-        public StyleFontDefinition Get() => SignalProp.Get();
+        public StyleFontDefinition Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleFontDefinitionProp
     {
-        public WorkLoopSignalProp<StyleFontDefinition> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleFontDefinition> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleFontDefinitionProp(StyleFontDefinitionProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleFontDefinition>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleFontDefinition Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleFontDefinition Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct FontStyleProp
     {
-        public SignalProp<StyleEnum<FontStyle>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<FontStyle>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public FontStyleProp(StyleEnum<FontStyle> value)
         {
@@ -585,27 +706,36 @@ namespace Fiber.UIElements
             return new FontStyleProp(signal);
         }
 
-        public StyleEnum<FontStyle> Get() => SignalProp.Get();
+        public StyleEnum<FontStyle> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopFontStyleProp
     {
-        public WorkLoopSignalProp<StyleEnum<FontStyle>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<FontStyle>> WorkLoopSignalProp { get; }
 
         public WorkLoopFontStyleProp(FontStyleProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<FontStyle>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<FontStyle> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<FontStyle> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StylePropertyNamesProp
     {
-        public SignalProp<StyleList<StylePropertyName>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleList<StylePropertyName>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StylePropertyNamesProp(StyleList<StylePropertyName> value)
         {
@@ -632,27 +762,36 @@ namespace Fiber.UIElements
             return new StylePropertyNamesProp(signal);
         }
 
-        public StyleList<StylePropertyName> Get() => SignalProp.Get();
+        public StyleList<StylePropertyName> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStylePropertyNamesProp
     {
-        public WorkLoopSignalProp<StyleList<StylePropertyName>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleList<StylePropertyName>> WorkLoopSignalProp { get; }
 
         public WorkLoopStylePropertyNamesProp(StylePropertyNamesProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleList<StylePropertyName>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleList<StylePropertyName> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleList<StylePropertyName> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct TimeValuesProp
     {
-        public SignalProp<StyleList<TimeValue>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleList<TimeValue>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public TimeValuesProp(StyleList<TimeValue> value)
         {
@@ -679,27 +818,36 @@ namespace Fiber.UIElements
             return new TimeValuesProp(signal);
         }
 
-        public StyleList<TimeValue> Get() => SignalProp.Get();
+        public StyleList<TimeValue> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopTimeValuesProp
     {
-        public WorkLoopSignalProp<StyleList<TimeValue>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleList<TimeValue>> WorkLoopSignalProp { get; }
 
         public WorkLoopTimeValuesProp(TimeValuesProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleList<TimeValue>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleList<TimeValue> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleList<TimeValue> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct EasingFunctionsProp
     {
-        public SignalProp<StyleList<EasingFunction>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleList<EasingFunction>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public EasingFunctionsProp(StyleList<EasingFunction> value)
         {
@@ -726,27 +874,36 @@ namespace Fiber.UIElements
             return new EasingFunctionsProp(signal);
         }
 
-        public StyleList<EasingFunction> Get() => SignalProp.Get();
+        public StyleList<EasingFunction> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopEasingFunctionsProp
     {
-        public WorkLoopSignalProp<StyleList<EasingFunction>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleList<EasingFunction>> WorkLoopSignalProp { get; }
 
         public WorkLoopEasingFunctionsProp(EasingFunctionsProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleList<EasingFunction>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleList<EasingFunction> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleList<EasingFunction> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleTransformOriginProp
     {
-        public SignalProp<StyleTransformOrigin> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleTransformOrigin> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleTransformOriginProp(StyleTransformOrigin value)
         {
@@ -773,27 +930,36 @@ namespace Fiber.UIElements
             return new StyleTransformOriginProp(signal);
         }
 
-        public StyleTransformOrigin Get() => SignalProp.Get();
+        public StyleTransformOrigin Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleTransformOriginProp
     {
-        public WorkLoopSignalProp<StyleTransformOrigin> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleTransformOrigin> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleTransformOriginProp(StyleTransformOriginProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleTransformOrigin>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleTransformOrigin Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleTransformOrigin Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleTranslateProp
     {
-        public SignalProp<StyleTranslate> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleTranslate> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleTranslateProp(StyleTranslate value)
         {
@@ -820,27 +986,36 @@ namespace Fiber.UIElements
             return new StyleTranslateProp(signal);
         }
 
-        public StyleTranslate Get() => SignalProp.Get();
+        public StyleTranslate Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleTranslateProp
     {
-        public WorkLoopSignalProp<StyleTranslate> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleTranslate> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleTranslateProp(StyleTranslateProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleTranslate>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleTranslate Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleTranslate Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleScaleProp
     {
-        public SignalProp<StyleScale> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleScale> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleScaleProp(StyleScale value)
         {
@@ -867,27 +1042,36 @@ namespace Fiber.UIElements
             return new StyleScaleProp(signal);
         }
 
-        public StyleScale Get() => SignalProp.Get();
+        public StyleScale Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleScaleProp
     {
-        public WorkLoopSignalProp<StyleScale> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleScale> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleScaleProp(StyleScaleProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleScale>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleScale Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleScale Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct StyleRotateProp
     {
-        public SignalProp<StyleRotate> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleRotate> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public StyleRotateProp(StyleRotate value)
         {
@@ -914,27 +1098,36 @@ namespace Fiber.UIElements
             return new StyleRotateProp(signal);
         }
 
-        public StyleRotate Get() => SignalProp.Get();
+        public StyleRotate Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopStyleRotateProp
     {
-        public WorkLoopSignalProp<StyleRotate> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleRotate> WorkLoopSignalProp { get; }
 
         public WorkLoopStyleRotateProp(StyleRotateProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleRotate>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleRotate Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleRotate Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct TextAnchorProp
     {
-        public SignalProp<StyleEnum<TextAnchor>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<TextAnchor>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public TextAnchorProp(StyleEnum<TextAnchor> value)
         {
@@ -961,27 +1154,36 @@ namespace Fiber.UIElements
             return new TextAnchorProp(signal);
         }
 
-        public StyleEnum<TextAnchor> Get() => SignalProp.Get();
+        public StyleEnum<TextAnchor> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopTextAnchorProp
     {
-        public WorkLoopSignalProp<StyleEnum<TextAnchor>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<TextAnchor>> WorkLoopSignalProp { get; }
 
         public WorkLoopTextAnchorProp(TextAnchorProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<TextAnchor>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<TextAnchor> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<TextAnchor> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct OverflowProp
     {
-        public SignalProp<StyleEnum<Overflow>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Overflow>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public OverflowProp(StyleEnum<Overflow> value)
         {
@@ -1008,27 +1210,36 @@ namespace Fiber.UIElements
             return new OverflowProp(signal);
         }
 
-        public StyleEnum<Overflow> Get() => SignalProp.Get();
+        public StyleEnum<Overflow> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopOverflowProp
     {
-        public WorkLoopSignalProp<StyleEnum<Overflow>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Overflow>> WorkLoopSignalProp { get; }
 
         public WorkLoopOverflowProp(OverflowProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Overflow>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Overflow> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Overflow> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct TextOverflowProp
     {
-        public SignalProp<StyleEnum<TextOverflow>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<TextOverflow>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public TextOverflowProp(StyleEnum<TextOverflow> value)
         {
@@ -1055,27 +1266,36 @@ namespace Fiber.UIElements
             return new TextOverflowProp(signal);
         }
 
-        public StyleEnum<TextOverflow> Get() => SignalProp.Get();
+        public StyleEnum<TextOverflow> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopTextOverflowProp
     {
-        public WorkLoopSignalProp<StyleEnum<TextOverflow>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<TextOverflow>> WorkLoopSignalProp { get; }
 
         public WorkLoopTextOverflowProp(TextOverflowProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<TextOverflow>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<TextOverflow> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<TextOverflow> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct WhiteSpaceProp
     {
-        public SignalProp<StyleEnum<WhiteSpace>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<WhiteSpace>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public WhiteSpaceProp(StyleEnum<WhiteSpace> value)
         {
@@ -1102,27 +1322,81 @@ namespace Fiber.UIElements
             return new WhiteSpaceProp(signal);
         }
 
-        public StyleEnum<WhiteSpace> Get() => SignalProp.Get();
+        public StyleEnum<WhiteSpace> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopWhiteSpaceProp
     {
-        public WorkLoopSignalProp<StyleEnum<WhiteSpace>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<WhiteSpace>> WorkLoopSignalProp { get; }
 
         public WorkLoopWhiteSpaceProp(WhiteSpaceProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<WhiteSpace>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<WhiteSpace> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<WhiteSpace> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
+    }
+
+    public struct StyleMaterialDefinitionProp
+    {
+        public SignalProp<StyleMaterialDefinition> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
+
+        public StyleMaterialDefinitionProp(StyleMaterialDefinition value)
+        {
+            SignalProp = value;
+        }
+
+        public StyleMaterialDefinitionProp(BaseSignal<StyleMaterialDefinition> signal)
+        {
+            SignalProp = signal;
+        }
+
+
+        public static implicit operator StyleMaterialDefinitionProp(StyleKeyword keyword)
+        {
+            return new StyleMaterialDefinitionProp(keyword);
+        }
+
+        public static implicit operator StyleMaterialDefinitionProp(MaterialDefinition m)
+        {
+            return new StyleMaterialDefinitionProp(new StyleMaterialDefinition(m));
+        }
+
+        public static implicit operator StyleMaterialDefinitionProp(Material m)
+        {
+            return new StyleMaterialDefinitionProp(new StyleMaterialDefinition(m));
+        }
+
+
+        public static implicit operator StyleMaterialDefinitionProp(BaseSignal<StyleMaterialDefinition> signal)
+        {
+            return new StyleMaterialDefinitionProp(signal);
+        }
+
+        public StyleMaterialDefinition Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct VisibilityProp
     {
-        public SignalProp<StyleEnum<Visibility>> SignalProp { get; private set; }
-        public bool IsEmpty { get => SignalProp.IsEmpty; }
-        public bool IsValue { get => SignalProp.IsValue; }
-        public bool IsSignal { get => SignalProp.IsSignal; }
+        public SignalProp<StyleEnum<Visibility>> SignalProp { get; }
+        public bool IsEmpty => SignalProp.IsEmpty;
+        public bool IsValue => SignalProp.IsValue;
+        public bool IsSignal => SignalProp.IsSignal;
 
         public VisibilityProp(StyleEnum<Visibility> value)
         {
@@ -1149,84 +1423,95 @@ namespace Fiber.UIElements
             return new VisibilityProp(signal);
         }
 
-        public StyleEnum<Visibility> Get() => SignalProp.Get();
+        public StyleEnum<Visibility> Get()
+        {
+            return SignalProp.Get();
+        }
     }
 
     public struct WorkLoopVisibilityProp
     {
-        public WorkLoopSignalProp<StyleEnum<Visibility>> WorkLoopSignalProp { get; private set; }
+        public WorkLoopSignalProp<StyleEnum<Visibility>> WorkLoopSignalProp { get; }
 
         public WorkLoopVisibilityProp(VisibilityProp prop)
         {
-            WorkLoopSignalProp = new(prop.SignalProp);
+            WorkLoopSignalProp = new WorkLoopSignalProp<StyleEnum<Visibility>>(prop.SignalProp);
         }
-        public bool Check() => WorkLoopSignalProp.Check();
-        public StyleEnum<Visibility> Get() => WorkLoopSignalProp.Get();
+        public bool Check()
+        {
+            return WorkLoopSignalProp.Check();
+        }
+        public StyleEnum<Visibility> Get()
+        {
+            return WorkLoopSignalProp.Get();
+        }
     }
 
     public struct Style
     {
-        public PositionProp Position { get; private set; }
-        public StyleLengthProp Right { get; private set; }
-        public StyleLengthProp Bottom { get; private set; }
-        public StyleLengthProp Left { get; private set; }
-        public StyleLengthProp Top { get; private set; }
-        public StyleLengthProp PaddingRight { get; private set; }
-        public StyleLengthProp PaddingBottom { get; private set; }
-        public StyleLengthProp PaddingLeft { get; private set; }
-        public StyleLengthProp PaddingTop { get; private set; }
-        public StyleLengthProp MarginRight { get; private set; }
-        public StyleLengthProp MarginBottom { get; private set; }
-        public StyleLengthProp MarginLeft { get; private set; }
-        public StyleLengthProp MarginTop { get; private set; }
-        public StyleLengthProp BorderTopRightRadius { get; private set; }
-        public StyleLengthProp BorderTopLeftRadius { get; private set; }
-        public StyleLengthProp BorderBottomRightRadius { get; private set; }
-        public StyleLengthProp BorderBottomLeftRadius { get; private set; }
-        public StyleFloatProp BorderRightWidth { get; private set; }
-        public StyleFloatProp BorderBottomWidth { get; private set; }
-        public StyleFloatProp BorderLeftWidth { get; private set; }
-        public StyleFloatProp BorderTopWidth { get; private set; }
-        public StyleColorProp BorderRightColor { get; private set; }
-        public StyleColorProp BorderBottomColor { get; private set; }
-        public StyleColorProp BorderLeftColor { get; private set; }
-        public StyleColorProp BorderTopColor { get; private set; }
-        public DisplayStyleProp Display { get; private set; }
-        public StyleFloatProp FlexShrink { get; private set; }
-        public StyleFloatProp FlexGrow { get; private set; }
-        public FlexDirectionProp FlexDirection { get; private set; }
-        public JustifyProp JustifyContent { get; private set; }
-        public AlignProp AlignItems { get; private set; }
-        public WrapProp FlexWrap { get; private set; }
-        public StyleLengthProp Width { get; private set; }
-        public StyleLengthProp MaxWidth { get; private set; }
-        public StyleLengthProp MinWidth { get; private set; }
-        public StyleLengthProp Height { get; private set; }
-        public StyleLengthProp MaxHeight { get; private set; }
-        public StyleLengthProp MinHeight { get; private set; }
-        public StyleColorProp BackgroundColor { get; private set; }
-        public StyleColorProp Color { get; private set; }
-        public StyleLengthProp FontSize { get; private set; }
-        public StyleFontProp UnityFont { get; private set; }
-        public StyleFontDefinitionProp UnityFontDefinition { get; private set; }
-        public FontStyleProp UnityFontStyle { get; private set; }
-        public StyleLengthProp UnityParagraphSpacing { get; private set; }
-        public TextAnchorProp UnityTextAlign { get; private set; }
-        public StyleFloatProp UnityTextOutlineWidth { get; private set; }
-        public StyleColorProp UnityTextOutlineColor { get; private set; }
-        public StylePropertyNamesProp TransitionProperty { get; private set; }
-        public TimeValuesProp TransitionDelay { get; private set; }
-        public TimeValuesProp TransitionDuration { get; private set; }
-        public EasingFunctionsProp TransitionTimingFunction { get; private set; }
-        public StyleTransformOriginProp TransformOrigin { get; private set; }
-        public StyleTranslateProp Translate { get; private set; }
-        public StyleScaleProp Scale { get; private set; }
-        public StyleRotateProp Rotate { get; private set; }
-        public StyleFloatProp Opacity { get; private set; }
-        public OverflowProp Overflow { get; private set; }
-        public TextOverflowProp TextOverflow { get; private set; }
-        public WhiteSpaceProp WhiteSpace { get; private set; }
-        public VisibilityProp Visibility { get; private set; }
+        public PositionProp Position { get; }
+        public StyleLengthProp Right { get; }
+        public StyleLengthProp Bottom { get; }
+        public StyleLengthProp Left { get; }
+        public StyleLengthProp Top { get; }
+        public StyleLengthProp PaddingRight { get; }
+        public StyleLengthProp PaddingBottom { get; }
+        public StyleLengthProp PaddingLeft { get; }
+        public StyleLengthProp PaddingTop { get; }
+        public StyleLengthProp MarginRight { get; }
+        public StyleLengthProp MarginBottom { get; }
+        public StyleLengthProp MarginLeft { get; }
+        public StyleLengthProp MarginTop { get; }
+        public StyleLengthProp BorderTopRightRadius { get; }
+        public StyleLengthProp BorderTopLeftRadius { get; }
+        public StyleLengthProp BorderBottomRightRadius { get; }
+        public StyleLengthProp BorderBottomLeftRadius { get; }
+        public StyleFloatProp BorderRightWidth { get; }
+        public StyleFloatProp BorderBottomWidth { get; }
+        public StyleFloatProp BorderLeftWidth { get; }
+        public StyleFloatProp BorderTopWidth { get; }
+        public StyleColorProp BorderRightColor { get; }
+        public StyleColorProp BorderBottomColor { get; }
+        public StyleColorProp BorderLeftColor { get; }
+        public StyleColorProp BorderTopColor { get; }
+        public DisplayStyleProp Display { get; }
+        public StyleFloatProp FlexShrink { get; }
+        public StyleFloatProp FlexGrow { get; }
+        public FlexDirectionProp FlexDirection { get; }
+        public JustifyProp JustifyContent { get; }
+        public AlignProp AlignItems { get; }
+        public WrapProp FlexWrap { get; }
+        public StyleLengthProp Width { get; }
+        public StyleLengthProp MaxWidth { get; }
+        public StyleLengthProp MinWidth { get; }
+        public StyleLengthProp Height { get; }
+        public StyleLengthProp MaxHeight { get; }
+        public StyleLengthProp MinHeight { get; }
+        public StyleColorProp BackgroundColor { get; }
+        public StyleColorProp Color { get; }
+        public StyleLengthProp FontSize { get; }
+        public StyleFontProp UnityFont { get; }
+        public StyleFontDefinitionProp UnityFontDefinition { get; }
+        public FontStyleProp UnityFontStyle { get; }
+        public StyleLengthProp UnityParagraphSpacing { get; }
+        public TextAnchorProp UnityTextAlign { get; }
+        public StyleFloatProp UnityTextOutlineWidth { get; }
+        public StyleColorProp UnityTextOutlineColor { get; }
+        public StylePropertyNamesProp TransitionProperty { get; }
+        public TimeValuesProp TransitionDelay { get; }
+        public TimeValuesProp TransitionDuration { get; }
+        public EasingFunctionsProp TransitionTimingFunction { get; }
+        public StyleTransformOriginProp TransformOrigin { get; }
+        public StyleTranslateProp Translate { get; }
+        public StyleScaleProp Scale { get; }
+        public StyleRotateProp Rotate { get; }
+        public StyleFloatProp Opacity { get; }
+        public OverflowProp Overflow { get; }
+        public TextOverflowProp TextOverflow { get; }
+        public WhiteSpaceProp WhiteSpace { get; }
+        public VisibilityProp Visibility { get; }
+
+        public StyleMaterialDefinitionProp UnityMaterial { get; }
 
         public Style(
             PositionProp position = new(),
@@ -1289,7 +1574,8 @@ namespace Fiber.UIElements
             OverflowProp overflow = new(),
             TextOverflowProp textOverflow = new(),
             WhiteSpaceProp whiteSpace = new(),
-            VisibilityProp visibility = new()
+            VisibilityProp visibility = new(),
+            StyleMaterialDefinitionProp unityMaterial = new()
         )
         {
             Position = position;
@@ -1353,6 +1639,7 @@ namespace Fiber.UIElements
             TextOverflow = textOverflow;
             WhiteSpace = whiteSpace;
             Visibility = visibility;
+            UnityMaterial = unityMaterial;
         }
 
         public Style(
@@ -1417,7 +1704,8 @@ namespace Fiber.UIElements
             OverflowProp overflow = new(),
             TextOverflowProp textOverflow = new(),
             WhiteSpaceProp whiteSpace = new(),
-            VisibilityProp visibility = new()
+            VisibilityProp visibility = new(),
+            StyleMaterialDefinitionProp unityMaterial = new()
         )
         {
             Position = mergedStyle.Position.IsEmpty ? position : mergedStyle.Position;
@@ -1481,6 +1769,7 @@ namespace Fiber.UIElements
             TextOverflow = mergedStyle.TextOverflow.IsEmpty ? textOverflow : mergedStyle.TextOverflow;
             WhiteSpace = mergedStyle.WhiteSpace.IsEmpty ? whiteSpace : mergedStyle.WhiteSpace;
             Visibility = mergedStyle.Visibility.IsEmpty ? visibility : mergedStyle.Visibility;
+            UnityMaterial = mergedStyle.UnityMaterial.IsEmpty ? unityMaterial : mergedStyle.UnityMaterial;
         }
     }
 }

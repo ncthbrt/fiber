@@ -1,9 +1,9 @@
 using System;
-using UnityEngine.UIElements;
 using Fiber;
+using Fiber.InteractiveUI;
 using Fiber.UIElements;
 using Signals;
-using Fiber.InteractiveUI;
+using UnityEngine.UIElements;
 
 namespace SilkUI
 {
@@ -23,30 +23,30 @@ namespace SilkUI
         )
         {
             return new SilkIconButtonComponent(
-                iconName: iconName,
-                onPress: onPress,
-                isDisabled: isDisabled,
-                size: size,
-                role: role,
-                subRole: subRole,
-                variant: variant,
-                style: style,
-                forwardRef: forwardRef
+                iconName,
+                onPress,
+                isDisabled,
+                size,
+                role,
+                subRole,
+                variant,
+                style,
+                forwardRef
             );
         }
     }
 
     public class SilkIconButtonComponent : BaseComponent
     {
+        private readonly Ref<VisualElement> _forwardRef;
         private readonly SignalProp<string> _iconName;
-        private readonly Action<PointerData> _onPress;
         private readonly ISignal<bool> _isDisabled;
-        private readonly IconSize _size;
+        private readonly Action<PointerData> _onPress;
         private readonly string _role;
+        private readonly IconSize _size;
+        private readonly Style _style;
         private readonly string _subRole;
         private readonly SignalProp<string> _variant;
-        private readonly Style _style;
-        private readonly Ref<VisualElement> _forwardRef;
 
         public SilkIconButtonComponent(
             SignalProp<string> iconName,
@@ -91,20 +91,20 @@ namespace SilkUI
 
         public override VirtualBody Render()
         {
-            var interactiveElement = F.CreateInteractiveElement(_ref: _forwardRef, isDisabled: _isDisabled, onPressUp: _onPress);
+            var interactiveElement = F.CreateInteractiveElement(_forwardRef, _isDisabled, onPressUp: _onPress);
 
-            var overrideVisualComponents = C<OverrideVisualComponents>(throwIfNotFound: false);
+            var overrideVisualComponents = C<OverrideVisualComponents>(false);
             if (overrideVisualComponents?.CreateIconButton != null)
             {
                 return overrideVisualComponents.CreateIconButton(
-                    iconName: _iconName,
-                    onPress: _onPress,
-                    interactiveRef: interactiveElement,
-                    role: _role,
-                    subRole: _subRole,
-                    variant: _variant,
-                    style: _style,
-                    forwardRef: _forwardRef
+                    _iconName,
+                    _onPress,
+                    interactiveElement,
+                    _role,
+                    _subRole,
+                    _variant,
+                    _style,
+                    _forwardRef
                 );
             }
 
@@ -112,18 +112,18 @@ namespace SilkUI
             var (role, subRole) = F.ResolveRoleAndSubRole(_role, _subRole);
 
             var color = themeStore.Color(
-                role: role,
-                elementType: ElementType.Text,
-                interactiveElement: interactiveElement,
-                subRole: subRole,
-                variant: _variant
+                role,
+                ElementType.Text,
+                interactiveElement,
+                subRole,
+                _variant
             );
             var backgroundColor = themeStore.Color(
-                role: role,
-                elementType: ElementType.Background,
-                interactiveElement: interactiveElement,
-                subRole: subRole,
-                variant: _variant
+                role,
+                ElementType.Background,
+                interactiveElement,
+                subRole,
+                _variant
             );
 
             return F.SilkIcon(
@@ -131,7 +131,7 @@ namespace SilkUI
                 iconName: _iconName,
                 size: _size,
                 style: new Style(
-                    mergedStyle: _style,
+                    _style,
                     color: color,
                     backgroundColor: backgroundColor,
                     width: themeStore.Spacing(GetDimensionSpacing()),

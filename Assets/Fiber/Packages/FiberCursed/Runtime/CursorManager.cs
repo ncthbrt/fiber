@@ -1,14 +1,120 @@
 using System;
-using UnityEngine;
 using System.Collections.Generic;
 using FiberUtils;
+using UnityEngine;
 using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 #if UNITY_WEBGL && !UNITY_EDITOR
 using System.Runtime.InteropServices;
 #endif
 
 namespace Fiber.Cursed
 {
+    [Serializable]
+    public abstract class WishCursorKey
+    {
+    }
+
+    public class WishCursorIntIdKey : WishCursorKey, IEquatable<WishCursorIntIdKey>
+    {
+        public WishCursorIntIdKey(int id)
+        {
+            Id = id;
+        }
+        public int Id { get; }
+        public bool Equals(WishCursorIntIdKey other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((WishCursorIntIdKey)obj);
+        }
+        public override int GetHashCode()
+        {
+            return Id;
+        }
+        public static bool operator ==(WishCursorIntIdKey left, WishCursorIntIdKey right)
+        {
+            return Equals(left, right);
+        }
+        public static bool operator !=(WishCursorIntIdKey left, WishCursorIntIdKey right)
+        {
+            return !Equals(left, right);
+        }
+    }
+
+    public class WishCursorEntityIdKey : WishCursorKey, IEquatable<WishCursorEntityIdKey>
+    {
+        public WishCursorEntityIdKey(EntityId entityId)
+        {
+            EntityId = entityId;
+
+        }
+        public EntityId EntityId { get; }
+        public bool Equals(WishCursorEntityIdKey other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return EntityId.Equals(other.EntityId);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((WishCursorEntityIdKey)obj);
+        }
+        public override int GetHashCode()
+        {
+            return EntityId.GetHashCode();
+        }
+        public static bool operator ==(WishCursorEntityIdKey left, WishCursorEntityIdKey right)
+        {
+            return Equals(left, right);
+        }
+        public static bool operator !=(WishCursorEntityIdKey left, WishCursorEntityIdKey right)
+        {
+            return !Equals(left, right);
+        }
+    }
+
     // Enum based on https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
     [Serializable]
     public enum CursorType
@@ -48,7 +154,7 @@ namespace Fiber.Cursed
         NeswResize = 32,
         NwseResize = 33,
         ZoomIn = 34,
-        ZoomOut = 35,
+        ZoomOut = 35
     }
 
     [Serializable]
@@ -68,49 +174,121 @@ namespace Fiber.Cursed
 
     public static class CursorUtils
     {
-        private static Dictionary<CursorType, string> _cursorTypeToStringMap = new()
+        private static readonly Dictionary<CursorType, string> _cursorTypeToStringMap = new()
         {
-            { CursorType.Default, "default" },
-            { CursorType.Auto, "auto" },
-            { CursorType.None, "none" },
-            { CursorType.ContextMenu, "context-menu" },
-            { CursorType.Help, "help" },
-            { CursorType.Pointer, "pointer" },
-            { CursorType.Progress, "progress" },
-            { CursorType.Wait, "wait" },
-            { CursorType.Cell, "cell" },
-            { CursorType.CrossHair, "crosshair" },
-            { CursorType.Text, "text" },
-            { CursorType.VerticalText, "vertical-text" },
-            { CursorType.Alias, "alias" },
-            { CursorType.Copy, "copy" },
-            { CursorType.Move, "move" },
-            { CursorType.NoDrop, "no-drop" },
-            { CursorType.NotAllowed, "not-allowed" },
-            { CursorType.Grab, "grab" },
-            { CursorType.Grabbing, "grabbing" },
-            { CursorType.AllScroll, "all-scroll" },
-            { CursorType.ColResize, "col-resize" },
-            { CursorType.RowResize, "row-resize" },
-            { CursorType.NResize, "n-resize" },
-            { CursorType.EResize, "e-resize" },
-            { CursorType.SResize, "s-resize" },
-            { CursorType.WResize, "w-resize" },
-            { CursorType.NeResize, "ne-resize" },
-            { CursorType.NwResize, "nw-resize" },
-            { CursorType.SeResize, "se-resize" },
-            { CursorType.SwResize, "sw-resize" },
-            { CursorType.EwResize, "ew-resize" },
-            { CursorType.NsResize, "ns-resize" },
-            { CursorType.NeswResize, "nesw-resize" },
-            { CursorType.NwseResize, "nwse-resize" },
-            { CursorType.ZoomIn, "zoom-in" },
-            { CursorType.ZoomOut, "zoom-out" },
+            {
+                CursorType.Default, "default"
+            },
+            {
+                CursorType.Auto, "auto"
+            },
+            {
+                CursorType.None, "none"
+            },
+            {
+                CursorType.ContextMenu, "context-menu"
+            },
+            {
+                CursorType.Help, "help"
+            },
+            {
+                CursorType.Pointer, "pointer"
+            },
+            {
+                CursorType.Progress, "progress"
+            },
+            {
+                CursorType.Wait, "wait"
+            },
+            {
+                CursorType.Cell, "cell"
+            },
+            {
+                CursorType.CrossHair, "crosshair"
+            },
+            {
+                CursorType.Text, "text"
+            },
+            {
+                CursorType.VerticalText, "vertical-text"
+            },
+            {
+                CursorType.Alias, "alias"
+            },
+            {
+                CursorType.Copy, "copy"
+            },
+            {
+                CursorType.Move, "move"
+            },
+            {
+                CursorType.NoDrop, "no-drop"
+            },
+            {
+                CursorType.NotAllowed, "not-allowed"
+            },
+            {
+                CursorType.Grab, "grab"
+            },
+            {
+                CursorType.Grabbing, "grabbing"
+            },
+            {
+                CursorType.AllScroll, "all-scroll"
+            },
+            {
+                CursorType.ColResize, "col-resize"
+            },
+            {
+                CursorType.RowResize, "row-resize"
+            },
+            {
+                CursorType.NResize, "n-resize"
+            },
+            {
+                CursorType.EResize, "e-resize"
+            },
+            {
+                CursorType.SResize, "s-resize"
+            },
+            {
+                CursorType.WResize, "w-resize"
+            },
+            {
+                CursorType.NeResize, "ne-resize"
+            },
+            {
+                CursorType.NwResize, "nw-resize"
+            },
+            {
+                CursorType.SeResize, "se-resize"
+            },
+            {
+                CursorType.SwResize, "sw-resize"
+            },
+            {
+                CursorType.EwResize, "ew-resize"
+            },
+            {
+                CursorType.NsResize, "ns-resize"
+            },
+            {
+                CursorType.NeswResize, "nesw-resize"
+            },
+            {
+                CursorType.NwseResize, "nwse-resize"
+            },
+            {
+                CursorType.ZoomIn, "zoom-in"
+            },
+            {
+                CursorType.ZoomOut, "zoom-out"
+            }
         };
 
         public static string CursorTypeToString(CursorType cursorType)
         {
-            if (_cursorTypeToStringMap.ContainsKey(cursorType) == false)
+            if (!_cursorTypeToStringMap.ContainsKey(cursorType))
             {
                 return null;
             }
@@ -127,17 +305,15 @@ namespace Fiber.Cursed
         private static extern void Fiber_SetBrowserCursor(string cursor);
 #endif
 
-        [SerializeField]
-        [FiberReadOnly]
+        [SerializeField, FiberReadOnly]
         private List<CursorDefinition> _cursorDefinitions = new();
-        [SerializeField]
-        [FiberReadOnly]
-        private IndexedDictionary<int, CursorWish> _cursorWishesById = new();
+        [SerializeField, FiberReadOnly]
+        private IndexedDictionary<WishCursorKey, CursorWish> _cursorWishesById = new();
 
         private struct CursorWish
         {
-            public int Prio;
-            public CursorType Cursor;
+            public readonly int Prio;
+            public readonly CursorType Cursor;
 
             public CursorWish(int prio, CursorType cursor)
             {
@@ -167,16 +343,16 @@ namespace Fiber.Cursed
         public void WishCursorUIElements(int id, CursorType cursor, VisualElement visualElement)
         {
             var prio = visualElement.GetParentCount();
-            WishCursor(id, cursor, prio);
+            WishCursor(new WishCursorIntIdKey(id), cursor, prio);
         }
 
         public void WishCursorGameObject(CursorType cursor, GameObject gameObject)
         {
             var prio = gameObject.transform.GetParentCount();
-            WishCursor(gameObject.GetInstanceID(), cursor, prio);
+            WishCursor(new WishCursorEntityIdKey(gameObject.GetEntityId()), cursor, prio);
         }
 
-        public void WishCursor(int id, CursorType cursor, int prio = 0)
+        public void WishCursor(WishCursorKey id, CursorType cursor, int prio = 0)
         {
             if (IsWishingCursor(id))
             {
@@ -189,22 +365,25 @@ namespace Fiber.Cursed
             UpdateCursor();
         }
 
-        public void UnwishCursor(int id)
+        public void UnwishCursor(WishCursorKey id)
         {
-            if (!_cursorWishesById.ContainsKey(id)) return;
+            if (!_cursorWishesById.ContainsKey(id))
+            {
+                return;
+            }
             _cursorWishesById.Remove(id);
             UpdateCursor();
         }
 
-        public bool IsWishingCursor(int id)
+        public bool IsWishingCursor(WishCursorKey id)
         {
             return _cursorWishesById.ContainsKey(id);
         }
 
         public void UpdateCursor()
         {
-            int pickedCursorWishKey = -1;
-            int pickedCursorWishPrio = -1;
+            WishCursorKey pickedCursorWishKey = null;
+            var pickedCursorWishPrio = -1;
 
             for (var i = 0; i < _cursorWishesById.Count; ++i)
             {
@@ -216,10 +395,10 @@ namespace Fiber.Cursed
                 }
             }
 
-            SetCursor(pickedCursorWishKey != -1 ? _cursorWishesById.GetByKey(pickedCursorWishKey).Cursor : CursorType.Default);
+            SetCursor(pickedCursorWishKey != null ? _cursorWishesById.GetByKey(pickedCursorWishKey).Cursor : CursorType.Default);
         }
 
-        void SetCursor(CursorType cursor)
+        private void SetCursor(CursorType cursor)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             var cursorString = CursorUtils.CursorTypeToString(cursor);
@@ -232,14 +411,13 @@ namespace Fiber.Cursed
                 {
                     var texture = cursorDefinition.Texture;
                     var hotspot = cursorDefinition.Hotspot;
-                    UnityEngine.Cursor.SetCursor(texture, hotspot, CursorMode.Auto);
+                    Cursor.SetCursor(texture, hotspot, CursorMode.Auto);
                     return;
                 }
             }
 
-            UnityEngine.Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 #endif
         }
     }
-
 }

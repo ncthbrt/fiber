@@ -1,9 +1,9 @@
 using System;
-using UnityEngine.UIElements;
-using Signals;
 using Fiber.Cursed;
 using FiberUtils;
+using Signals;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Fiber.InteractiveUI
 {
@@ -21,14 +21,15 @@ namespace Fiber.InteractiveUI
         }
 
         public static InteractiveCursorTypes Default = new(
-            onHover: CursorType.Pointer,
-            onPressedDown: CursorType.Pointer,
-            onDisabled: CursorType.NotAllowed
+            CursorType.Pointer,
+            CursorType.Pointer,
+            CursorType.NotAllowed
         );
 
         public readonly bool IsEmpty()
         {
-            return OnHover == CursorType.Default && OnPressedDown == CursorType.Default && OnDisabled == CursorType.Default;
+            return OnHover == CursorType.Default && OnPressedDown == CursorType.Default &&
+                   OnDisabled == CursorType.Default;
         }
     }
 
@@ -36,7 +37,7 @@ namespace Fiber.InteractiveUI
     {
         public Vector3 Position;
         public int PointerId;
-        private EventBase _evt;
+        private readonly EventBase _evt;
 
         public PointerData(Vector3 position, int pointerId, EventBase evt = null)
         {
@@ -51,9 +52,9 @@ namespace Fiber.InteractiveUI
         }
     }
 
-    public static partial class BaseComponentExtensions
+    public static class BaseComponentExtensions
     {
-        private static IntIdGenerator _idGenerator = new IntIdGenerator();
+        private static IntIdGenerator _idGenerator;
         private static readonly float MAX_CLICK_HOLD_TIME = 0.15f;
 
         public static InteractiveElement CreateInteractiveElement(
@@ -75,9 +76,9 @@ namespace Fiber.InteractiveUI
             }
 
             var interactiveElement = new InteractiveElement(
-                _ref: _ref,
-                isDisabled: isDisabled,
-                isSelected: isSelected
+                _ref,
+                isDisabled,
+                isSelected
             );
 
             // Keep track of how long time ago pointer was down in order to detect
@@ -87,7 +88,7 @@ namespace Fiber.InteractiveUI
             PointerData pointerDataLastPointerDown = default;
             if (onClick != null)
             {
-                component.CreateUpdateEffect((deltaTime) =>
+                component.CreateUpdateEffect(deltaTime =>
                 {
                     if (isClicking)
                     {
@@ -108,7 +109,6 @@ namespace Fiber.InteractiveUI
                 interactiveElement.Ref.Current.RegisterCallback<PointerEnterEvent>(evt =>
                 {
                     interactiveElement.IsHovered.Value = true;
-
                     if (onPointerEnter != null)
                     {
                         onPointerEnter(new PointerData(evt.position, evt.pointerId, evt));
@@ -144,7 +144,7 @@ namespace Fiber.InteractiveUI
                     }
                     // Need to specify useTrickleDown in order to catch the event for buttons
                     // See this thread for more info: https://forum.unity.com/threads/pointerdownevent-on-buttons-not-working.1211238/
-                }, useTrickleDown: TrickleDown.TrickleDown);
+                }, TrickleDown.TrickleDown);
                 interactiveElement.Ref.Current.RegisterCallback<PointerUpEvent>(evt =>
                 {
                     if (interactiveElement.IsPressed.Value)
@@ -179,41 +179,41 @@ namespace Fiber.InteractiveUI
                         }
                     });
                 }
+
                 return null;
             });
 
             var cursorManager = component.C<CursorManager>();
             var id = _idGenerator.NextId();
             component.CreateEffect((isHovered, isPressed, isDisabled) =>
-            {
-                if (isDisabled && (isHovered || isPressed))
                 {
-                    cursorManager.WishCursorUIElements(id, cursorType.OnDisabled, interactiveElement.Ref.Current);
-                }
-                else if (isHovered)
-                {
-                    cursorManager.WishCursorUIElements(id, cursorType.OnHover, interactiveElement.Ref.Current);
-                }
-                else if (isPressed)
-                {
-                    cursorManager.WishCursorUIElements(id, cursorType.OnPressedDown, interactiveElement.Ref.Current);
-                }
-                else
-                {
-                    cursorManager.UnwishCursor(id);
-                }
+                    if (isDisabled && (isHovered || isPressed))
+                    {
+                        cursorManager.WishCursorUIElements(id, cursorType.OnDisabled, interactiveElement.Ref.Current);
+                    }
+                    else if (isHovered)
+                    {
+                        cursorManager.WishCursorUIElements(id, cursorType.OnHover, interactiveElement.Ref.Current);
+                    }
+                    else if (isPressed)
+                    {
+                        cursorManager.WishCursorUIElements(id, cursorType.OnPressedDown,
+                            interactiveElement.Ref.Current);
+                    }
+                    else
+                    {
+                        cursorManager.UnwishCursor(new WishCursorIntIdKey(id));
+                    }
 
-                return () =>
-                {
-                    cursorManager.UnwishCursor(id);
-                };
-            }, interactiveElement.IsHovered, interactiveElement.IsPressed, interactiveElement.IsDisabled ?? StaticSignals.FALSE);
+                    return () => { cursorManager.UnwishCursor(new WishCursorIntIdKey(id)); };
+                }, interactiveElement.IsHovered, interactiveElement.IsPressed,
+                interactiveElement.IsDisabled ?? StaticSignals.FALSE);
 
-            component.CreateOnEnableEffect((enable) =>
+            component.CreateOnEnableEffect(enable =>
             {
                 if (!enable)
                 {
-                    cursorManager.UnwishCursor(id);
+                    cursorManager.UnwishCursor(new WishCursorIntIdKey(id));
                 }
             });
 
@@ -223,13 +223,6 @@ namespace Fiber.InteractiveUI
 
     public class InteractiveElement
     {
-        public Ref<VisualElement> Ref { get; private set; }
-        public Signal<bool> IsHovered { get; private set; }
-        public Signal<bool> IsPressed { get; private set; }
-        // IsDisabled and IsSelected will most likely be derived from external state, but can be handled interanlly
-        public ISignal<bool> IsDisabled { get; private set; }
-        public ISignal<bool> IsSelected { get; private set; }
-
         public InteractiveElement(
             Ref<VisualElement> _ref = null,
             ISignal<bool> isDisabled = null,
@@ -242,5 +235,14 @@ namespace Fiber.InteractiveUI
             IsDisabled = isDisabled;
             IsSelected = isSelected;
         }
+
+        public Ref<VisualElement> Ref { get; }
+        public Signal<bool> IsHovered { get; }
+
+        public Signal<bool> IsPressed { get; }
+
+        // IsDisabled and IsSelected will most likely be derived from external state, but can be handled interanlly
+        public ISignal<bool> IsDisabled { get; }
+        public ISignal<bool> IsSelected { get; private set; }
     }
 }

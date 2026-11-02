@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Fiber.GameObjects;
+using Signals;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Signals;
-using Fiber.GameObjects;
 
 namespace Fiber.UIElements
 {
@@ -27,17 +27,90 @@ namespace Fiber.UIElements
             {
                 c1
             };
-            if (c2 != null) result.Add(c2);
-            if (c3 != null) result.Add(c3);
-            if (c4 != null) result.Add(c4);
-            if (c5 != null) result.Add(c5);
-            if (c6 != null) result.Add(c6);
-            if (c7 != null) result.Add(c7);
-            if (c8 != null) result.Add(c8);
-            if (c9 != null) result.Add(c9);
-            if (c10 != null) result.Add(c10);
+            if (c2 != null)
+            {
+                result.Add(c2);
+            }
+            if (c3 != null)
+            {
+                result.Add(c3);
+            }
+            if (c4 != null)
+            {
+                result.Add(c4);
+            }
+            if (c5 != null)
+            {
+                result.Add(c5);
+            }
+            if (c6 != null)
+            {
+                result.Add(c6);
+            }
+            if (c7 != null)
+            {
+                result.Add(c7);
+            }
+            if (c8 != null)
+            {
+                result.Add(c8);
+            }
+            if (c9 != null)
+            {
+                result.Add(c9);
+            }
+            if (c10 != null)
+            {
+                result.Add(c10);
+            }
 
             return result;
+        }
+
+        public static BaseSignal<List<string>> ClassNameProps(
+            this BaseComponent component,
+            SignalProp<string> c1,
+            SignalProp<string> c2 = default,
+            SignalProp<string> c3 = default,
+            SignalProp<string> c4 = default,
+            params SignalProp<string>[] rest
+        )
+        {
+            var baseSignal = component.CreateComputedSignal((c1, c2, c3, c4) =>
+            {
+                var result = new List<string>();
+                if (!string.IsNullOrEmpty(c1))
+                {
+                    result.Add(c1);
+                }
+                if (!string.IsNullOrEmpty(c2))
+                {
+                    result.Add(c2);
+                }
+                if (!string.IsNullOrEmpty(c3))
+                {
+                    result.Add(c4);
+                }
+                return result;
+            }, c1.ToSignal(), c2.ToSignal(), c3.ToSignal(), c4.ToSignal());
+            if (rest != null && rest.Length > 0)
+            {
+                BaseSignal<List<string>> result = baseSignal;
+                for (var i = 0; i < rest.Length; ++i)
+                {
+                    var currentSignal = rest[i];
+                    result = component.CreateComputedSignal((lst, current) =>
+                    {
+                        if (!string.IsNullOrEmpty(current))
+                        {
+                            lst.Add(current);
+                        }
+                        return lst;
+                    }, result, currentSignal.ToSignal());
+                }
+                return result;
+            }
+            return baseSignal;
         }
 
         public static UIPortalDestinationComponent UIPortalDestination(
@@ -47,8 +120,8 @@ namespace Fiber.UIElements
         )
         {
             return new UIPortalDestinationComponent(
-                id: id,
-                forwardRef: forwardRef
+                id,
+                forwardRef
             );
         }
 
@@ -68,17 +141,17 @@ namespace Fiber.UIElements
         )
         {
             return new ViewComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                createInstance: createInstance,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
+                style,
+                name,
+                pickingMode,
+                onClick,
+                _ref,
+                onCreateRef,
+                createInstance,
+                className,
+                usageHints,
+                setVisibilityStyleProp,
+                children
             );
         }
 
@@ -99,18 +172,18 @@ namespace Fiber.UIElements
         )
         {
             return new ScrollViewComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                scrollRef: scrollRef,
-                onCreateScrollRef: onCreateScrollRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
+                style,
+                name,
+                pickingMode,
+                onClick,
+                _ref,
+                onCreateRef,
+                scrollRef,
+                onCreateScrollRef,
+                className,
+                usageHints,
+                setVisibilityStyleProp,
+                children
             );
         }
 
@@ -133,20 +206,20 @@ namespace Fiber.UIElements
         )
         {
             return new ButtonComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                text: text,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                onKeyDown: onKeyDown,
-                buttonRef: buttonRef,
-                onCreateButtonRef: onCreateButtonRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
+                style,
+                name,
+                pickingMode,
+                text,
+                onClick,
+                _ref,
+                onCreateRef,
+                onKeyDown,
+                buttonRef,
+                onCreateButtonRef,
+                className,
+                usageHints,
+                setVisibilityStyleProp,
+                children
             );
         }
 
@@ -168,19 +241,19 @@ namespace Fiber.UIElements
         )
         {
             return new TextComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                text: text,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                textRef: textRef,
-                onCreateTextRef: onCreateTextRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
+                style,
+                name,
+                pickingMode,
+                text,
+                onClick,
+                _ref,
+                onCreateRef,
+                textRef,
+                onCreateTextRef,
+                className,
+                usageHints,
+                setVisibilityStyleProp,
+                children
             );
         }
 
@@ -204,21 +277,21 @@ namespace Fiber.UIElements
         )
         {
             return new TextFieldComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                value: value,
-                onChange: onChange,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                onKeyDown: onKeyDown,
-                textFieldRef: textFieldRef,
-                onCreateTextFieldRef: onCreateTextFieldRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
+                style,
+                name,
+                pickingMode,
+                value,
+                onChange,
+                onClick,
+                _ref,
+                onCreateRef,
+                onKeyDown,
+                textFieldRef,
+                onCreateTextFieldRef,
+                className,
+                usageHints,
+                setVisibilityStyleProp,
+                children
             );
         }
 
@@ -246,29 +319,29 @@ namespace Fiber.UIElements
         )
         {
             return new ImageComponent(
-                style: style,
-                name: name,
-                pickingMode: pickingMode,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                children: children,
-                imageRef: imageRef,
-                onCreateImageRef: onCreateImageRef,
-                image: image,
-                scaleMode: scaleMode,
-                sourceRect: sourceRect,
-                sprite: sprite,
-                tintColor: tintColor,
-                uv: uv,
+                style,
+                name,
+                pickingMode,
+                onClick,
+                _ref,
+                onCreateRef,
+                className,
+                children,
+                imageRef,
+                onCreateImageRef,
+                image,
+                scaleMode,
+                sourceRect,
+                sprite,
+                tintColor,
+                uv,
                 vectorImage: vectorImage,
                 usageHints: usageHints,
                 setVisibilityStyleProp: setVisibilityStyleProp
             );
         }
 
-        public static UIDocumentComponent UIDocument(
+        public static PanelRendererComponent PanelRenderer(
             this BaseComponent component,
             SignalProp<string> name = new(),
             SignalProp<bool> active = new(),
@@ -277,22 +350,22 @@ namespace Fiber.UIElements
             Func<GameObject, GameObject> createInstance = null,
             Action<GameObject> destroyInstance = null,
             PanelSettings panelSettings = null,
-            SignalProp<float> sortingOrder = new(),
+            SignalProp<int> sortingOrder = new(),
             UsageHints usageHints = UsageHints.None,
             VirtualBody children = new()
         )
         {
-            return new UIDocumentComponent(
-                name: name,
-                active: active,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                createInstance: createInstance,
-                destroyInstance: destroyInstance,
-                panelSettings: panelSettings,
-                sortingOrder: sortingOrder,
-                usageHints: usageHints,
-                children: children
+            return new PanelRendererComponent(
+                name,
+                active,
+                _ref,
+                onCreateRef,
+                createInstance,
+                destroyInstance,
+                panelSettings,
+                sortingOrder,
+                usageHints,
+                children
             );
         }
 
@@ -305,22 +378,22 @@ namespace Fiber.UIElements
             Func<GameObject, GameObject> createInstance = null,
             Action<GameObject> destroyInstance = null,
             PanelSettings panelSettings = null,
-            SignalProp<float> sortingOrder = new(),
+            SignalProp<int> sortingOrder = new(),
             UsageHints usageHints = UsageHints.None,
             VirtualBody children = default
         )
         {
             return new UIRootComponent(
-                name: name,
-                active: active,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                createInstance: createInstance,
-                destroyInstance: destroyInstance,
-                panelSettings: panelSettings,
-                sortingOrder: sortingOrder,
-                usageHints: usageHints,
-                children: children
+                name,
+                active,
+                _ref,
+                onCreateRef,
+                createInstance,
+                destroyInstance,
+                panelSettings,
+                sortingOrder,
+                usageHints,
+                children
             );
         }
     }
@@ -338,23 +411,12 @@ namespace Fiber.UIElements
         public VirtualBody Render(FiberNode fiberNode)
         {
             BaseImplementation(fiberNode);
-            return new ViewComponent(_ref: _forwardRef, style: new Style(position: Position.Absolute));
+            return new ViewComponent(_ref: _forwardRef, style: new Style(Position.Absolute));
         }
     }
 
     public class ViewComponent : VirtualNode
     {
-        public SignalProp<Style> Style { get; private set; }
-        public SignalProp<string> Name { get; private set; }
-        public SignalProp<PickingMode> PickingMode { get; private set; }
-        public EventCallback<ClickEvent> OnClick { get; private set; }
-        public Ref<VisualElement> Ref { get; private set; }
-        public Action<VisualElement> OnCreateRef { get; private set; }
-        public Func<VisualElement> CreateInstance { get; private set; }
-        public SignalProp<List<string>> ClassName { get; private set; }
-        public UsageHints UsageHints { get; private set; }
-        public VisibilityStyleProp SetVisibilityStyleProp { get; private set; }
-
         public ViewComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -368,9 +430,9 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             VirtualBody children = default
         ) : base(
-                children: children,
-                VirtualNodeType.CustomComponent
-            )
+            children,
+            VirtualNodeType.CustomComponent
+        )
         {
             Style = style;
             Name = name;
@@ -383,13 +445,20 @@ namespace Fiber.UIElements
             UsageHints = usageHints;
             SetVisibilityStyleProp = setVisibilityStyleProp;
         }
+        public SignalProp<Style> Style { get; }
+        public SignalProp<string> Name { get; }
+        public SignalProp<PickingMode> PickingMode { get; }
+        public EventCallback<ClickEvent> OnClick { get; }
+        public Ref<VisualElement> Ref { get; }
+        public Action<VisualElement> OnCreateRef { get; }
+        public Func<VisualElement> CreateInstance { get; }
+        public SignalProp<List<string>> ClassName { get; }
+        public UsageHints UsageHints { get; }
+        public VisibilityStyleProp SetVisibilityStyleProp { get; }
     }
 
     public class ScrollViewComponent : ViewComponent
     {
-        public Ref<ScrollView> ScrollRef { get; set; }
-        public Action<ScrollView> OnCreateScrollRef { get; set; }
-
         public ScrollViewComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -404,30 +473,27 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             VirtualBody children = default
         ) : base(
-                style: style,
-                name: name,
-                pickingMode: !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
-            )
+            style,
+            name,
+            !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
+            onClick,
+            _ref,
+            onCreateRef,
+            className: className,
+            usageHints: usageHints,
+            setVisibilityStyleProp: setVisibilityStyleProp,
+            children: children
+        )
         {
             ScrollRef = scrollRef;
             OnCreateScrollRef = onCreateScrollRef;
         }
+        public Ref<ScrollView> ScrollRef { get; set; }
+        public Action<ScrollView> OnCreateScrollRef { get; set; }
     }
 
     public class ButtonComponent : ViewComponent
     {
-        public SignalProp<string> Text { get; private set; }
-        public Ref<Button> ButtonRef { get; private set; }
-        public Action<Button> OnCreateButtonRef { get; private set; }
-        public EventCallback<KeyDownEvent> OnKeyDown { get; private set; }
-
         public ButtonComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -444,31 +510,31 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             VirtualBody children = default
         ) : base(
-                style: style,
-                name: name,
-                pickingMode: !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
-            )
+            style,
+            name,
+            !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
+            onClick,
+            _ref,
+            onCreateRef,
+            className: className,
+            usageHints: usageHints,
+            setVisibilityStyleProp: setVisibilityStyleProp,
+            children: children
+        )
         {
             Text = text;
             ButtonRef = buttonRef;
             OnCreateButtonRef = onCreateButtonRef;
             OnKeyDown = onKeyDown;
         }
+        public SignalProp<string> Text { get; }
+        public Ref<Button> ButtonRef { get; }
+        public Action<Button> OnCreateButtonRef { get; }
+        public EventCallback<KeyDownEvent> OnKeyDown { get; }
     }
 
     public class TextComponent : ViewComponent
     {
-        public SignalProp<string> Text { get; set; }
-        public Ref<TextElement> TextRef { get; set; }
-        public Action<TextElement> OnCreateTextRef { get; set; }
-
         public TextComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -484,32 +550,29 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             VirtualBody children = default
         ) : base(
-                style: style,
-                name: name,
-                pickingMode: !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
-            )
+            style,
+            name,
+            !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
+            onClick,
+            _ref,
+            onCreateRef,
+            className: className,
+            usageHints: usageHints,
+            setVisibilityStyleProp: setVisibilityStyleProp,
+            children: children
+        )
         {
             Text = text;
             TextRef = textRef;
             OnCreateTextRef = onCreateTextRef;
         }
+        public SignalProp<string> Text { get; set; }
+        public Ref<TextElement> TextRef { get; set; }
+        public Action<TextElement> OnCreateTextRef { get; set; }
     }
 
     public class TextFieldComponent : ViewComponent
     {
-        public SignalProp<string> Value { get; set; }
-        public EventCallback<ChangeEvent<string>> OnChange { get; set; }
-        public EventCallback<KeyDownEvent> OnKeyDown { get; set; }
-        public Ref<TextField> TextFieldRef { get; set; }
-        public Action<TextField> OnCreateTextFieldRef { get; set; }
-
         public TextFieldComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -527,17 +590,17 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             VirtualBody children = default
         ) : base(
-                style: style,
-                name: name,
-                pickingMode: !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
-            )
+            style,
+            name,
+            !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
+            onClick,
+            _ref,
+            onCreateRef,
+            className: className,
+            usageHints: usageHints,
+            setVisibilityStyleProp: setVisibilityStyleProp,
+            children: children
+        )
         {
             Value = value;
             OnChange = onChange;
@@ -545,20 +608,15 @@ namespace Fiber.UIElements
             TextFieldRef = textFieldRef;
             OnCreateTextFieldRef = onCreateTextFieldRef;
         }
+        public SignalProp<string> Value { get; set; }
+        public EventCallback<ChangeEvent<string>> OnChange { get; set; }
+        public EventCallback<KeyDownEvent> OnKeyDown { get; set; }
+        public Ref<TextField> TextFieldRef { get; set; }
+        public Action<TextField> OnCreateTextFieldRef { get; set; }
     }
 
     public class ImageComponent : ViewComponent
     {
-        public SignalProp<Texture> Image { get; set; }
-        public SignalProp<ScaleMode> ScaleMode { get; set; }
-        public SignalProp<Rect> SourceRect { get; set; }
-        public SignalProp<Sprite> Sprite { get; set; }
-        public SignalProp<Color> TintColor { get; set; }
-        public SignalProp<Rect> UV { get; set; }
-        public SignalProp<VectorImage> VectorImage { get; set; }
-        public Ref<Image> ImageRef { get; set; }
-        public Action<Image> OnCreateImageRef { get; set; }
-
         public ImageComponent(
             SignalProp<Style> style = new(),
             SignalProp<string> name = new(),
@@ -580,17 +638,17 @@ namespace Fiber.UIElements
             VisibilityStyleProp setVisibilityStyleProp = VisibilityStyleProp.None,
             SignalProp<VectorImage> vectorImage = new()
         ) : base(
-                style: style,
-                name: name,
-                pickingMode: !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
-                onClick: onClick,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                className: className,
-                usageHints: usageHints,
-                setVisibilityStyleProp: setVisibilityStyleProp,
-                children: children
-            )
+            style,
+            name,
+            !pickingMode.IsEmpty ? pickingMode : UnityEngine.UIElements.PickingMode.Position,
+            onClick,
+            _ref,
+            onCreateRef,
+            className: className,
+            usageHints: usageHints,
+            setVisibilityStyleProp: setVisibilityStyleProp,
+            children: children
+        )
         {
             ImageRef = imageRef;
             OnCreateImageRef = onCreateImageRef;
@@ -602,30 +660,28 @@ namespace Fiber.UIElements
             UV = uv;
             VectorImage = vectorImage;
         }
+        public SignalProp<Texture> Image { get; set; }
+        public SignalProp<ScaleMode> ScaleMode { get; set; }
+        public SignalProp<Rect> SourceRect { get; set; }
+        public SignalProp<Sprite> Sprite { get; set; }
+        public SignalProp<Color> TintColor { get; set; }
+        public SignalProp<Rect> UV { get; set; }
+        public SignalProp<VectorImage> VectorImage { get; set; }
+        public Ref<Image> ImageRef { get; set; }
+        public Action<Image> OnCreateImageRef { get; set; }
     }
 
     public class UIRootContext
     {
-        public Ref<VisualElement> RootRef { get; private set; }
-
         public UIRootContext(Ref<VisualElement> rootRef)
         {
             RootRef = rootRef;
         }
+        public Ref<VisualElement> RootRef { get; private set; }
     }
 
     public class UIRootComponent : BaseComponent
     {
-        private SignalProp<string> Name { get; set; }
-        private new SignalProp<bool> Active { get; set; }
-        private Ref<GameObject> Ref { get; set; }
-        private Action<GameObject> OnCreateRef { get; set; }
-        private Func<GameObject, GameObject> CreateInstance { get; set; }
-        private Action<GameObject> DestroyInstance { get; set; }
-        private PanelSettings PanelSettings { get; set; }
-        private SignalProp<float> SortingOrder { get; set; }
-        private UsageHints UsageHints { get; set; }
-
         public UIRootComponent(
             SignalProp<string> name = new(),
             SignalProp<bool> active = new(),
@@ -634,10 +690,10 @@ namespace Fiber.UIElements
             Func<GameObject, GameObject> createInstance = null,
             Action<GameObject> destroyInstance = null,
             PanelSettings panelSettings = null,
-            SignalProp<float> sortingOrder = new(),
+            SignalProp<int> sortingOrder = new(),
             UsageHints usageHints = UsageHints.None,
             VirtualBody children = default
-        ) : base(children: children)
+        ) : base(children)
         {
             Name = name;
             Active = active;
@@ -646,47 +702,57 @@ namespace Fiber.UIElements
             CreateInstance = createInstance;
             DestroyInstance = destroyInstance;
             PanelSettings = panelSettings;
-            SortingOrder = !sortingOrder.IsEmpty ? sortingOrder : 0f;
+            SortingOrder = !sortingOrder.IsEmpty ? sortingOrder : 0;
             UsageHints = usageHints;
         }
+        private SignalProp<string> Name { get; }
+        private new SignalProp<bool> Active { get; }
+        private Ref<GameObject> Ref { get; }
+        private Action<GameObject> OnCreateRef { get; }
+        private Func<GameObject, GameObject> CreateInstance { get; }
+        private Action<GameObject> DestroyInstance { get; }
+        private PanelSettings PanelSettings { get; }
+        private SignalProp<int> SortingOrder { get; }
+        private UsageHints UsageHints { get; }
 
         public override VirtualBody Render()
         {
             var rootRef = new Ref<VisualElement>();
 
             return F.ContextProvider(
-                value: new UIRootContext(rootRef),
-                children: F.UIDocument(
-                    name: Name,
-                    active: Active,
-                    _ref: Ref,
-                    onCreateRef: (_ref) =>
+                new UIRootContext(rootRef),
+                F.PanelRenderer(
+                    Name,
+                    Active,
+                    Ref,
+                    @ref =>
                     {
                         if (OnCreateRef != null)
                         {
-                            var root = _ref.GetComponent<UIDocument>().rootVisualElement;
-                            rootRef.Current = root;
-                            OnCreateRef?.Invoke(_ref);
+                            var panelRenderer = @ref.GetComponent<PanelRenderer>();
+                            void HandleUIReload(PanelRenderer _, VisualElement rootElement, int __)
+                            {
+                                rootRef.Current = rootElement;
+                                OnCreateRef?.Invoke(@ref);
+                                panelRenderer.UnregisterUIReloadCallback(HandleUIReload);
+                            }
+                            panelRenderer.RegisterUIReloadCallback(HandleUIReload);
                         }
                     },
-                    createInstance: CreateInstance,
-                    destroyInstance: DestroyInstance,
-                    panelSettings: PanelSettings,
-                    sortingOrder: SortingOrder,
-                    usageHints: UsageHints,
-                    children: Children
+                    CreateInstance,
+                    DestroyInstance,
+                    PanelSettings,
+                    SortingOrder,
+                    UsageHints,
+                    Children
                 )
             );
         }
     }
 
-    public class UIDocumentComponent : GameObjectComponent
+    public class PanelRendererComponent : GameObjectComponent
     {
-        public PanelSettings PanelSettings { get; private set; }
-        public SignalProp<float> SortingOrder { get; private set; }
-        public UsageHints UsageHints { get; private set; }
-
-        public UIDocumentComponent(
+        public PanelRendererComponent(
             SignalProp<string> name = new(),
             SignalProp<bool> active = new(),
             Ref<GameObject> _ref = null,
@@ -694,36 +760,44 @@ namespace Fiber.UIElements
             Func<GameObject, GameObject> createInstance = null,
             Action<GameObject> destroyInstance = null,
             PanelSettings panelSettings = null,
-            SignalProp<float> sortingOrder = new(),
+            SignalProp<int> sortingOrder = new(),
             UsageHints usageHints = UsageHints.None,
             VirtualBody children = new()
         ) : base(
-                name: name,
-                active: active,
-                _ref: _ref,
-                onCreateRef: onCreateRef,
-                createInstance: createInstance,
-                destroyInstance: destroyInstance,
-                children: children
-            )
+            name,
+            active,
+            _ref: _ref,
+            onCreateRef: onCreateRef,
+            createInstance: createInstance,
+            destroyInstance: destroyInstance,
+            children: children
+        )
         {
             PanelSettings = panelSettings;
-            SortingOrder = !sortingOrder.IsEmpty ? sortingOrder : 0f;
+            SortingOrder = !sortingOrder.IsEmpty ? sortingOrder : 0;
             UsageHints = usageHints;
         }
+        public PanelSettings PanelSettings { get; }
+        public SignalProp<int> SortingOrder { get; }
+        public UsageHints UsageHints { get; }
     }
 
     public class TextFieldNativeNode : VisualElementNativeNode
     {
-        public TextField TextFieldElementInstance { get; private set; }
         private WorkLoopSignalProp<string> _valueWorkLoopItem;
 
         public TextFieldNativeNode(TextFieldComponent virtualNode, TextField instance, UIElementsRendererExtension renderer) : base(virtualNode, instance, renderer)
         {
             TextFieldElementInstance = instance;
 
-            if (virtualNode.TextFieldRef != null) virtualNode.TextFieldRef.Current = instance;
-            if (virtualNode.OnCreateTextFieldRef != null) virtualNode.OnCreateTextFieldRef(instance);
+            if (virtualNode.TextFieldRef != null)
+            {
+                virtualNode.TextFieldRef.Current = instance;
+            }
+            if (virtualNode.OnCreateTextFieldRef != null)
+            {
+                virtualNode.OnCreateTextFieldRef(instance);
+            }
             if (!virtualNode.Value.IsEmpty)
             {
                 TextFieldElementInstance.value = virtualNode.Value.Get();
@@ -731,17 +805,18 @@ namespace Fiber.UIElements
                 {
                     virtualNode.Value.Signal.RegisterDependent(this);
                 }
-                _valueWorkLoopItem = new(virtualNode.Value);
+                _valueWorkLoopItem = new WorkLoopSignalProp<string>(virtualNode.Value);
             }
             if (virtualNode.OnChange != null)
             {
-                TextFieldElementInstance.RegisterCallback<ChangeEvent<string>>(virtualNode.OnChange);
+                TextFieldElementInstance.RegisterCallback(virtualNode.OnChange);
             }
             if (virtualNode.OnKeyDown != null)
             {
-                TextFieldElementInstance.RegisterCallback<KeyDownEvent>(virtualNode.OnKeyDown);
+                TextFieldElementInstance.RegisterCallback(virtualNode.OnKeyDown);
             }
         }
+        public TextField TextFieldElementInstance { get; }
 
         public override void Update()
         {
@@ -765,7 +840,6 @@ namespace Fiber.UIElements
 
     public class ImageNativeNode : VisualElementNativeNode
     {
-        public Image ImageInstance { get; private set; }
         private WorkLoopSignalProp<Texture> _imageWorkLoopItem;
         private WorkLoopSignalProp<ScaleMode> _scaleModeWorkLoopItem;
         private WorkLoopSignalProp<Rect> _sourceRectWorkLoopItem;
@@ -779,8 +853,14 @@ namespace Fiber.UIElements
         {
             ImageInstance = instance;
 
-            if (virtualNode.ImageRef != null) virtualNode.ImageRef.Current = instance;
-            if (virtualNode.OnCreateImageRef != null) virtualNode.OnCreateImageRef(instance);
+            if (virtualNode.ImageRef != null)
+            {
+                virtualNode.ImageRef.Current = instance;
+            }
+            if (virtualNode.OnCreateImageRef != null)
+            {
+                virtualNode.OnCreateImageRef(instance);
+            }
 
             if (!virtualNode.Image.IsEmpty)
             {
@@ -789,7 +869,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.Image.Signal.RegisterDependent(this);
                 }
-                _imageWorkLoopItem = new(virtualNode.Image);
+                _imageWorkLoopItem = new WorkLoopSignalProp<Texture>(virtualNode.Image);
             }
 
             if (!virtualNode.ScaleMode.IsEmpty)
@@ -799,7 +879,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.ScaleMode.Signal.RegisterDependent(this);
                 }
-                _scaleModeWorkLoopItem = new(virtualNode.ScaleMode);
+                _scaleModeWorkLoopItem = new WorkLoopSignalProp<ScaleMode>(virtualNode.ScaleMode);
             }
 
             if (!virtualNode.SourceRect.IsEmpty)
@@ -809,7 +889,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.SourceRect.Signal.RegisterDependent(this);
                 }
-                _sourceRectWorkLoopItem = new(virtualNode.SourceRect);
+                _sourceRectWorkLoopItem = new WorkLoopSignalProp<Rect>(virtualNode.SourceRect);
             }
 
             if (!virtualNode.Sprite.IsEmpty)
@@ -819,7 +899,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.Sprite.Signal.RegisterDependent(this);
                 }
-                _spriteWorkLoopItem = new(virtualNode.Sprite);
+                _spriteWorkLoopItem = new WorkLoopSignalProp<Sprite>(virtualNode.Sprite);
             }
 
             if (!virtualNode.TintColor.IsEmpty)
@@ -829,7 +909,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.TintColor.Signal.RegisterDependent(this);
                 }
-                _tintColorWorkLoopItem = new(virtualNode.TintColor);
+                _tintColorWorkLoopItem = new WorkLoopSignalProp<Color>(virtualNode.TintColor);
             }
 
             if (!virtualNode.UV.IsEmpty)
@@ -839,7 +919,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.UV.Signal.RegisterDependent(this);
                 }
-                _uvWorkLoopItem = new(virtualNode.UV);
+                _uvWorkLoopItem = new WorkLoopSignalProp<Rect>(virtualNode.UV);
             }
 
             if (!virtualNode.VectorImage.IsEmpty)
@@ -849,9 +929,10 @@ namespace Fiber.UIElements
                 {
                     virtualNode.VectorImage.Signal.RegisterDependent(this);
                 }
-                _vectorImageWorkLoopItem = new(virtualNode.VectorImage);
+                _vectorImageWorkLoopItem = new WorkLoopSignalProp<VectorImage>(virtualNode.VectorImage);
             }
         }
+        public Image ImageInstance { get; }
 
         public override void Update()
         {
@@ -923,7 +1004,6 @@ namespace Fiber.UIElements
 
     public class TextElementNativeNode : VisualElementNativeNode
     {
-        public TextElement TextElementInstance { get; private set; }
         private WorkLoopSignalProp<string> _textWorkLoopItem;
 
         public TextElementNativeNode(TextComponent virtualNode, TextElement instance, UIElementsRendererExtension renderer)
@@ -931,7 +1011,10 @@ namespace Fiber.UIElements
         {
             TextElementInstance = instance;
 
-            if (virtualNode.TextRef != null) virtualNode.TextRef.Current = instance;
+            if (virtualNode.TextRef != null)
+            {
+                virtualNode.TextRef.Current = instance;
+            }
             virtualNode.OnCreateTextRef?.Invoke(instance);
             if (!virtualNode.Text.IsEmpty)
             {
@@ -940,9 +1023,10 @@ namespace Fiber.UIElements
                 {
                     virtualNode.Text.Signal.RegisterDependent(this);
                 }
-                _textWorkLoopItem = new(virtualNode.Text);
+                _textWorkLoopItem = new WorkLoopSignalProp<string>(virtualNode.Text);
             }
         }
+        public TextElement TextElementInstance { get; }
 
         public override void Update()
         {
@@ -966,20 +1050,21 @@ namespace Fiber.UIElements
 
     public class ScrollViewNativeNode : VisualElementNativeNode
     {
-        public ScrollView ScrollViewInstance { get; private set; }
-
         public ScrollViewNativeNode(ScrollViewComponent virtualNode, ScrollView instance, UIElementsRendererExtension renderer)
             : base(virtualNode, instance, renderer)
         {
             ScrollViewInstance = instance;
-            if (virtualNode.ScrollRef != null) virtualNode.ScrollRef.Current = instance;
+            if (virtualNode.ScrollRef != null)
+            {
+                virtualNode.ScrollRef.Current = instance;
+            }
             virtualNode.OnCreateScrollRef?.Invoke(instance);
         }
+        public ScrollView ScrollViewInstance { get; private set; }
     }
 
     public class ButtonNativeNode : VisualElementNativeNode
     {
-        public Button ButtonInstance { get; private set; }
         private WorkLoopSignalProp<string> _textWorkLoopItem;
 
         public ButtonNativeNode(ButtonComponent virtualNode, Button instance, UIElementsRendererExtension renderer)
@@ -987,12 +1072,18 @@ namespace Fiber.UIElements
         {
             ButtonInstance = instance;
 
-            if (virtualNode.ButtonRef != null) virtualNode.ButtonRef.Current = instance;
-            if (virtualNode.OnCreateButtonRef != null) virtualNode.OnCreateButtonRef(instance);
+            if (virtualNode.ButtonRef != null)
+            {
+                virtualNode.ButtonRef.Current = instance;
+            }
+            if (virtualNode.OnCreateButtonRef != null)
+            {
+                virtualNode.OnCreateButtonRef(instance);
+            }
             if (!virtualNode.Text.IsEmpty)
             {
                 ButtonInstance.text = virtualNode.Text.Get();
-                _textWorkLoopItem = new(virtualNode.Text);
+                _textWorkLoopItem = new WorkLoopSignalProp<string>(virtualNode.Text);
                 if (virtualNode.Text.IsSignal)
                 {
                     virtualNode.Text.Signal.RegisterDependent(this);
@@ -1000,9 +1091,10 @@ namespace Fiber.UIElements
             }
             if (virtualNode.OnKeyDown != null)
             {
-                ButtonInstance.RegisterCallback<KeyDownEvent>(virtualNode.OnKeyDown);
+                ButtonInstance.RegisterCallback(virtualNode.OnKeyDown);
             }
         }
+        public Button ButtonInstance { get; }
 
         public override void Update()
         {
@@ -1026,79 +1118,11 @@ namespace Fiber.UIElements
 
     public class VisualElementNativeNode : NativeNode
     {
-        public VisualElement Instance { get; private set; }
-        private bool IsVisible_SetByFiber { get; set; }
-        #region styles
-        private WorkLoopSignalProp<Style> _styleWorkLoopItem;
-        private Style _lastStyleFromSignal;
-        private WorkLoopPositionProp _positionWorkLoopItem;
-        private WorkLoopStyleLengthProp _rightWorkLoopItem;
-        private WorkLoopStyleLengthProp _bottomWorkLoopItem;
-        private WorkLoopStyleLengthProp _leftWorkLoopItem;
-        private WorkLoopStyleLengthProp _topWorkLoopItem;
-        private WorkLoopStyleLengthProp _paddingRightWorkLoopItem;
-        private WorkLoopStyleLengthProp _paddingBottomWorkLoopItem;
-        private WorkLoopStyleLengthProp _paddingLeftWorkLoopItem;
-        private WorkLoopStyleLengthProp _paddingTopWorkLoopItem;
-        private WorkLoopStyleLengthProp _marginRightWorkLoopItem;
-        private WorkLoopStyleLengthProp _marginBottomWorkLoopItem;
-        private WorkLoopStyleLengthProp _marginLeftWorkLoopItem;
-        private WorkLoopStyleLengthProp _marginTopWorkLoopItem;
-        private WorkLoopStyleLengthProp _borderTopRightRadiusWorkLoopItem;
-        private WorkLoopStyleLengthProp _borderTopLeftRadiusWorkLoopItem;
-        private WorkLoopStyleLengthProp _borderBottomRightRadiusWorkLoopItem;
-        private WorkLoopStyleLengthProp _borderBottomLeftRadiusWorkLoopItem;
-        private WorkLoopStyleFloatProp _borderRightWidthWorkLoopItem;
-        private WorkLoopStyleFloatProp _borderBottomWidthWorkLoopItem;
-        private WorkLoopStyleFloatProp _borderLeftWidthWorkLoopItem;
-        private WorkLoopStyleFloatProp _borderTopWidthWorkLoopItem;
-        private WorkLoopStyleColorProp _borderRightColorWorkLoopItem;
-        private WorkLoopStyleColorProp _borderBottomColorWorkLoopItem;
-        private WorkLoopStyleColorProp _borderLeftColorWorkLoopItem;
-        private WorkLoopStyleColorProp _borderTopColorWorkLoopItem;
-        private WorkLoopDisplayStyleProp _displayWorkLoopItem;
-        private WorkLoopStyleFloatProp _flexShrinkWorkLoopItem;
-        private WorkLoopStyleFloatProp _flexGrowWorkLoopItem;
-        private WorkLoopFlexDirectionProp _flexDirectionWorkLoopItem;
-        private WorkLoopJustifyProp _justifyContentWorkLoopItem;
-        private WorkLoopAlignProp _alignItemsWorkLoopItem;
-        private WorkLoopWrapProp _flexWrapWorkLoopItem;
-        private WorkLoopStyleLengthProp _widthWorkLoopItem;
-        private WorkLoopStyleLengthProp _maxWidthWorkLoopItem;
-        private WorkLoopStyleLengthProp _minWidthWorkLoopItem;
-        private WorkLoopStyleLengthProp _heightWorkLoopItem;
-        private WorkLoopStyleLengthProp _maxHeightWorkLoopItem;
-        private WorkLoopStyleLengthProp _minHeightWorkLoopItem;
-        private WorkLoopStyleColorProp _backgroundColorWorkLoopItem;
-        private WorkLoopStyleColorProp _colorWorkLoopItem;
-        private WorkLoopStyleLengthProp _fontSizeWorkLoopItem;
-        private WorkLoopStyleFontProp _unityFontWorkLoopItem;
-        private WorkLoopStyleFontDefinitionProp _unityFontDefinitionWorkLoopItem;
-        private WorkLoopFontStyleProp _unityFontStyleWorkLoopItem;
-        private WorkLoopStyleLengthProp _unityParagraphSpacingWorkLoopItem;
-        private WorkLoopTextAnchorProp _unityTextAlignWorkLoopItem;
-        private WorkLoopStyleFloatProp _unityTextOutlineWidthWorkLoopItem;
-        private WorkLoopStyleColorProp _unityTextOutlineColorWorkLoopItem;
-        private WorkLoopStylePropertyNamesProp _transitionPropertyWorkLoopItem;
-        private WorkLoopTimeValuesProp _transitionDelayWorkLoopItem;
-        private WorkLoopTimeValuesProp _transitionDurationWorkLoopItem;
-        private WorkLoopEasingFunctionsProp _transitionTimingFunctionWorkLoopItem;
-        private WorkLoopStyleTransformOriginProp _transformOriginWorkLoopItem;
-        private WorkLoopStyleTranslateProp _translateWorkLoopItem;
-        private WorkLoopStyleScaleProp _scaleWorkLoopItem;
-        private WorkLoopStyleRotateProp _rotateWorkLoopItem;
-        private WorkLoopStyleFloatProp _opacityWorkLoopItem;
-        private WorkLoopOverflowProp _overflowWorkLoopItem;
-        private WorkLoopTextOverflowProp _textOverflowWorkLoopItem;
-        private WorkLoopWhiteSpaceProp _whiteSpaceWorkLoopItem;
-        private WorkLoopVisibilityProp _visibilityWorkLoopItem;
-
-        #endregion
-        private WorkLoopSignalProp<string> _nameWorkLoopItem;
-        private WorkLoopSignalProp<PickingMode> _pickingModeWorkLoopItem;
-        private WorkLoopSignalProp<List<string>> _classNameWorkLoopItem;
         private readonly List<string> _previousClassNameList;
         private readonly VisibilityStyleProp _setVisibilityStyleProp;
+        private WorkLoopSignalProp<List<string>> _classNameWorkLoopItem;
+        private WorkLoopSignalProp<string> _nameWorkLoopItem;
+        private WorkLoopSignalProp<PickingMode> _pickingModeWorkLoopItem;
 
         public VisualElementNativeNode(ViewComponent virtualNode, VisualElement instance, UIElementsRendererExtension renderer)
         {
@@ -1117,11 +1141,14 @@ namespace Fiber.UIElements
                 _setVisibilityStyleProp = VisibilityStyleProp.Display;
             }
 
-            if (virtualNode.Ref != null) virtualNode.Ref.Current = instance;
+            if (virtualNode.Ref != null)
+            {
+                virtualNode.Ref.Current = instance;
+            }
             virtualNode.OnCreateRef?.Invoke(instance);
             if (!virtualNode.Style.IsEmpty)
             {
-                _styleWorkLoopItem = new(virtualNode.Style);
+                _styleWorkLoopItem = new WorkLoopSignalProp<Style>(virtualNode.Style);
                 if (virtualNode.Style.IsSignal)
                 {
                     virtualNode.Style.Signal.RegisterDependent(this);
@@ -1137,7 +1164,7 @@ namespace Fiber.UIElements
                         style.Position.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _positionWorkLoopItem = new(style.Position);
+                _positionWorkLoopItem = new WorkLoopPositionProp(style.Position);
 
                 if (!style.Right.IsEmpty)
                 {
@@ -1147,7 +1174,7 @@ namespace Fiber.UIElements
                         style.Right.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _rightWorkLoopItem = new(style.Right);
+                _rightWorkLoopItem = new WorkLoopStyleLengthProp(style.Right);
 
                 if (!style.Bottom.IsEmpty)
                 {
@@ -1157,7 +1184,7 @@ namespace Fiber.UIElements
                         style.Bottom.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _bottomWorkLoopItem = new(style.Bottom);
+                _bottomWorkLoopItem = new WorkLoopStyleLengthProp(style.Bottom);
 
                 if (!style.Left.IsEmpty)
                 {
@@ -1167,7 +1194,7 @@ namespace Fiber.UIElements
                         style.Left.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _leftWorkLoopItem = new(style.Left);
+                _leftWorkLoopItem = new WorkLoopStyleLengthProp(style.Left);
 
                 if (!style.Top.IsEmpty)
                 {
@@ -1177,7 +1204,7 @@ namespace Fiber.UIElements
                         style.Top.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _topWorkLoopItem = new(style.Top);
+                _topWorkLoopItem = new WorkLoopStyleLengthProp(style.Top);
 
                 if (!style.PaddingRight.IsEmpty)
                 {
@@ -1187,7 +1214,7 @@ namespace Fiber.UIElements
                         style.PaddingRight.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _paddingRightWorkLoopItem = new(style.PaddingRight);
+                _paddingRightWorkLoopItem = new WorkLoopStyleLengthProp(style.PaddingRight);
 
                 if (!style.PaddingBottom.IsEmpty)
                 {
@@ -1197,7 +1224,7 @@ namespace Fiber.UIElements
                         style.PaddingBottom.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _paddingBottomWorkLoopItem = new(style.PaddingBottom);
+                _paddingBottomWorkLoopItem = new WorkLoopStyleLengthProp(style.PaddingBottom);
 
                 if (!style.PaddingLeft.IsEmpty)
                 {
@@ -1207,7 +1234,7 @@ namespace Fiber.UIElements
                         style.PaddingLeft.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _paddingLeftWorkLoopItem = new(style.PaddingLeft);
+                _paddingLeftWorkLoopItem = new WorkLoopStyleLengthProp(style.PaddingLeft);
 
                 if (!style.PaddingTop.IsEmpty)
                 {
@@ -1217,7 +1244,7 @@ namespace Fiber.UIElements
                         style.PaddingTop.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _paddingTopWorkLoopItem = new(style.PaddingTop);
+                _paddingTopWorkLoopItem = new WorkLoopStyleLengthProp(style.PaddingTop);
 
                 if (!style.MarginRight.IsEmpty)
                 {
@@ -1227,7 +1254,7 @@ namespace Fiber.UIElements
                         style.MarginRight.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _marginRightWorkLoopItem = new(style.MarginRight);
+                _marginRightWorkLoopItem = new WorkLoopStyleLengthProp(style.MarginRight);
 
                 if (!style.MarginBottom.IsEmpty)
                 {
@@ -1237,7 +1264,7 @@ namespace Fiber.UIElements
                         style.MarginBottom.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _marginBottomWorkLoopItem = new(style.MarginBottom);
+                _marginBottomWorkLoopItem = new WorkLoopStyleLengthProp(style.MarginBottom);
 
                 if (!style.MarginLeft.IsEmpty)
                 {
@@ -1247,7 +1274,7 @@ namespace Fiber.UIElements
                         style.MarginLeft.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _marginLeftWorkLoopItem = new(style.MarginLeft);
+                _marginLeftWorkLoopItem = new WorkLoopStyleLengthProp(style.MarginLeft);
 
                 if (!style.MarginTop.IsEmpty)
                 {
@@ -1257,7 +1284,7 @@ namespace Fiber.UIElements
                         style.MarginTop.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _marginTopWorkLoopItem = new(style.MarginTop);
+                _marginTopWorkLoopItem = new WorkLoopStyleLengthProp(style.MarginTop);
 
                 if (!style.BorderTopRightRadius.IsEmpty)
                 {
@@ -1267,7 +1294,7 @@ namespace Fiber.UIElements
                         style.BorderTopRightRadius.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderTopRightRadiusWorkLoopItem = new(style.BorderTopRightRadius);
+                _borderTopRightRadiusWorkLoopItem = new WorkLoopStyleLengthProp(style.BorderTopRightRadius);
 
                 if (!style.BorderTopLeftRadius.IsEmpty)
                 {
@@ -1277,7 +1304,7 @@ namespace Fiber.UIElements
                         style.BorderTopLeftRadius.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderTopLeftRadiusWorkLoopItem = new(style.BorderTopLeftRadius);
+                _borderTopLeftRadiusWorkLoopItem = new WorkLoopStyleLengthProp(style.BorderTopLeftRadius);
 
                 if (!style.BorderBottomRightRadius.IsEmpty)
                 {
@@ -1287,7 +1314,7 @@ namespace Fiber.UIElements
                         style.BorderBottomRightRadius.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderBottomRightRadiusWorkLoopItem = new(style.BorderBottomRightRadius);
+                _borderBottomRightRadiusWorkLoopItem = new WorkLoopStyleLengthProp(style.BorderBottomRightRadius);
 
                 if (!style.BorderBottomLeftRadius.IsEmpty)
                 {
@@ -1297,7 +1324,7 @@ namespace Fiber.UIElements
                         style.BorderBottomLeftRadius.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderBottomLeftRadiusWorkLoopItem = new(style.BorderBottomLeftRadius);
+                _borderBottomLeftRadiusWorkLoopItem = new WorkLoopStyleLengthProp(style.BorderBottomLeftRadius);
 
                 if (!style.BorderRightWidth.IsEmpty)
                 {
@@ -1307,7 +1334,7 @@ namespace Fiber.UIElements
                         style.BorderRightWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderRightWidthWorkLoopItem = new(style.BorderRightWidth);
+                _borderRightWidthWorkLoopItem = new WorkLoopStyleFloatProp(style.BorderRightWidth);
 
                 if (!style.BorderBottomWidth.IsEmpty)
                 {
@@ -1317,7 +1344,7 @@ namespace Fiber.UIElements
                         style.BorderBottomWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderBottomWidthWorkLoopItem = new(style.BorderBottomWidth);
+                _borderBottomWidthWorkLoopItem = new WorkLoopStyleFloatProp(style.BorderBottomWidth);
 
                 if (!style.BorderLeftWidth.IsEmpty)
                 {
@@ -1327,7 +1354,7 @@ namespace Fiber.UIElements
                         style.BorderLeftWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderLeftWidthWorkLoopItem = new(style.BorderLeftWidth);
+                _borderLeftWidthWorkLoopItem = new WorkLoopStyleFloatProp(style.BorderLeftWidth);
 
                 if (!style.BorderTopWidth.IsEmpty)
                 {
@@ -1337,7 +1364,7 @@ namespace Fiber.UIElements
                         style.BorderTopWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderTopWidthWorkLoopItem = new(style.BorderTopWidth);
+                _borderTopWidthWorkLoopItem = new WorkLoopStyleFloatProp(style.BorderTopWidth);
 
                 if (!style.BorderRightColor.IsEmpty)
                 {
@@ -1347,7 +1374,7 @@ namespace Fiber.UIElements
                         style.BorderRightColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderRightColorWorkLoopItem = new(style.BorderRightColor);
+                _borderRightColorWorkLoopItem = new WorkLoopStyleColorProp(style.BorderRightColor);
 
                 if (!style.BorderBottomColor.IsEmpty)
                 {
@@ -1357,7 +1384,7 @@ namespace Fiber.UIElements
                         style.BorderBottomColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderBottomColorWorkLoopItem = new(style.BorderBottomColor);
+                _borderBottomColorWorkLoopItem = new WorkLoopStyleColorProp(style.BorderBottomColor);
 
                 if (!style.BorderLeftColor.IsEmpty)
                 {
@@ -1367,7 +1394,7 @@ namespace Fiber.UIElements
                         style.BorderLeftColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderLeftColorWorkLoopItem = new(style.BorderLeftColor);
+                _borderLeftColorWorkLoopItem = new WorkLoopStyleColorProp(style.BorderLeftColor);
 
                 if (!style.BorderTopColor.IsEmpty)
                 {
@@ -1377,7 +1404,7 @@ namespace Fiber.UIElements
                         style.BorderTopColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _borderTopColorWorkLoopItem = new(style.BorderTopColor);
+                _borderTopColorWorkLoopItem = new WorkLoopStyleColorProp(style.BorderTopColor);
 
                 if (!style.Display.IsEmpty)
                 {
@@ -1387,7 +1414,7 @@ namespace Fiber.UIElements
                         style.Display.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _displayWorkLoopItem = new(style.Display);
+                _displayWorkLoopItem = new WorkLoopDisplayStyleProp(style.Display);
 
                 if (!style.FlexShrink.IsEmpty)
                 {
@@ -1397,7 +1424,7 @@ namespace Fiber.UIElements
                         style.FlexShrink.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _flexShrinkWorkLoopItem = new(style.FlexShrink);
+                _flexShrinkWorkLoopItem = new WorkLoopStyleFloatProp(style.FlexShrink);
 
                 if (!style.FlexGrow.IsEmpty)
                 {
@@ -1407,7 +1434,7 @@ namespace Fiber.UIElements
                         style.FlexGrow.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _flexGrowWorkLoopItem = new(style.FlexGrow);
+                _flexGrowWorkLoopItem = new WorkLoopStyleFloatProp(style.FlexGrow);
 
                 if (!style.FlexDirection.IsEmpty)
                 {
@@ -1417,7 +1444,7 @@ namespace Fiber.UIElements
                         style.FlexDirection.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _flexDirectionWorkLoopItem = new(style.FlexDirection);
+                _flexDirectionWorkLoopItem = new WorkLoopFlexDirectionProp(style.FlexDirection);
 
                 if (!style.JustifyContent.IsEmpty)
                 {
@@ -1427,7 +1454,7 @@ namespace Fiber.UIElements
                         style.JustifyContent.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _justifyContentWorkLoopItem = new(style.JustifyContent);
+                _justifyContentWorkLoopItem = new WorkLoopJustifyProp(style.JustifyContent);
 
                 if (!style.AlignItems.IsEmpty)
                 {
@@ -1437,7 +1464,7 @@ namespace Fiber.UIElements
                         style.AlignItems.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _alignItemsWorkLoopItem = new(style.AlignItems);
+                _alignItemsWorkLoopItem = new WorkLoopAlignProp(style.AlignItems);
 
                 if (!style.FlexWrap.IsEmpty)
                 {
@@ -1447,7 +1474,7 @@ namespace Fiber.UIElements
                         style.FlexWrap.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _flexWrapWorkLoopItem = new(style.FlexWrap);
+                _flexWrapWorkLoopItem = new WorkLoopWrapProp(style.FlexWrap);
 
                 if (!style.Width.IsEmpty)
                 {
@@ -1457,7 +1484,7 @@ namespace Fiber.UIElements
                         style.Width.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _widthWorkLoopItem = new(style.Width);
+                _widthWorkLoopItem = new WorkLoopStyleLengthProp(style.Width);
 
                 if (!style.MaxWidth.IsEmpty)
                 {
@@ -1467,7 +1494,7 @@ namespace Fiber.UIElements
                         style.MaxWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _maxWidthWorkLoopItem = new(style.MaxWidth);
+                _maxWidthWorkLoopItem = new WorkLoopStyleLengthProp(style.MaxWidth);
 
                 if (!style.MinWidth.IsEmpty)
                 {
@@ -1477,7 +1504,7 @@ namespace Fiber.UIElements
                         style.MinWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _minWidthWorkLoopItem = new(style.MinWidth);
+                _minWidthWorkLoopItem = new WorkLoopStyleLengthProp(style.MinWidth);
 
                 if (!style.Height.IsEmpty)
                 {
@@ -1487,7 +1514,7 @@ namespace Fiber.UIElements
                         style.Height.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _heightWorkLoopItem = new(style.Height);
+                _heightWorkLoopItem = new WorkLoopStyleLengthProp(style.Height);
 
                 if (!style.MaxHeight.IsEmpty)
                 {
@@ -1497,7 +1524,7 @@ namespace Fiber.UIElements
                         style.MaxHeight.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _maxHeightWorkLoopItem = new(style.MaxHeight);
+                _maxHeightWorkLoopItem = new WorkLoopStyleLengthProp(style.MaxHeight);
 
                 if (!style.MinHeight.IsEmpty)
                 {
@@ -1507,7 +1534,7 @@ namespace Fiber.UIElements
                         style.MinHeight.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _minHeightWorkLoopItem = new(style.MinHeight);
+                _minHeightWorkLoopItem = new WorkLoopStyleLengthProp(style.MinHeight);
 
                 if (!style.BackgroundColor.IsEmpty)
                 {
@@ -1517,7 +1544,7 @@ namespace Fiber.UIElements
                         style.BackgroundColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _backgroundColorWorkLoopItem = new(style.BackgroundColor);
+                _backgroundColorWorkLoopItem = new WorkLoopStyleColorProp(style.BackgroundColor);
 
                 if (!style.Color.IsEmpty)
                 {
@@ -1527,7 +1554,7 @@ namespace Fiber.UIElements
                         style.Color.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _colorWorkLoopItem = new(style.Color);
+                _colorWorkLoopItem = new WorkLoopStyleColorProp(style.Color);
 
                 if (!style.FontSize.IsEmpty)
                 {
@@ -1537,7 +1564,7 @@ namespace Fiber.UIElements
                         style.FontSize.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _fontSizeWorkLoopItem = new(style.FontSize);
+                _fontSizeWorkLoopItem = new WorkLoopStyleLengthProp(style.FontSize);
 
                 if (!style.UnityFont.IsEmpty)
                 {
@@ -1547,7 +1574,7 @@ namespace Fiber.UIElements
                         style.UnityFont.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityFontWorkLoopItem = new(style.UnityFont);
+                _unityFontWorkLoopItem = new WorkLoopStyleFontProp(style.UnityFont);
 
                 if (!style.UnityFontDefinition.IsEmpty)
                 {
@@ -1557,7 +1584,7 @@ namespace Fiber.UIElements
                         style.UnityFontDefinition.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityFontDefinitionWorkLoopItem = new(style.UnityFontDefinition);
+                _unityFontDefinitionWorkLoopItem = new WorkLoopStyleFontDefinitionProp(style.UnityFontDefinition);
 
                 if (!style.UnityFontStyle.IsEmpty)
                 {
@@ -1567,7 +1594,7 @@ namespace Fiber.UIElements
                         style.UnityFontStyle.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityFontStyleWorkLoopItem = new(style.UnityFontStyle);
+                _unityFontStyleWorkLoopItem = new WorkLoopFontStyleProp(style.UnityFontStyle);
 
                 if (!style.UnityParagraphSpacing.IsEmpty)
                 {
@@ -1577,7 +1604,7 @@ namespace Fiber.UIElements
                         style.UnityParagraphSpacing.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityParagraphSpacingWorkLoopItem = new(style.UnityParagraphSpacing);
+                _unityParagraphSpacingWorkLoopItem = new WorkLoopStyleLengthProp(style.UnityParagraphSpacing);
 
                 if (!style.UnityTextAlign.IsEmpty)
                 {
@@ -1587,7 +1614,7 @@ namespace Fiber.UIElements
                         style.UnityTextAlign.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityTextAlignWorkLoopItem = new(style.UnityTextAlign);
+                _unityTextAlignWorkLoopItem = new WorkLoopTextAnchorProp(style.UnityTextAlign);
 
                 if (!style.UnityTextOutlineWidth.IsEmpty)
                 {
@@ -1597,7 +1624,7 @@ namespace Fiber.UIElements
                         style.UnityTextOutlineWidth.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityTextOutlineWidthWorkLoopItem = new(style.UnityTextOutlineWidth);
+                _unityTextOutlineWidthWorkLoopItem = new WorkLoopStyleFloatProp(style.UnityTextOutlineWidth);
 
                 if (!style.UnityTextOutlineColor.IsEmpty)
                 {
@@ -1607,7 +1634,7 @@ namespace Fiber.UIElements
                         style.UnityTextOutlineColor.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _unityTextOutlineColorWorkLoopItem = new(style.UnityTextOutlineColor);
+                _unityTextOutlineColorWorkLoopItem = new WorkLoopStyleColorProp(style.UnityTextOutlineColor);
 
                 if (!style.TransitionProperty.IsEmpty)
                 {
@@ -1617,7 +1644,7 @@ namespace Fiber.UIElements
                         style.TransitionProperty.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _transitionPropertyWorkLoopItem = new(style.TransitionProperty);
+                _transitionPropertyWorkLoopItem = new WorkLoopStylePropertyNamesProp(style.TransitionProperty);
 
                 if (!style.TransitionDelay.IsEmpty)
                 {
@@ -1627,7 +1654,7 @@ namespace Fiber.UIElements
                         style.TransitionDelay.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _transitionDelayWorkLoopItem = new(style.TransitionDelay);
+                _transitionDelayWorkLoopItem = new WorkLoopTimeValuesProp(style.TransitionDelay);
 
                 if (!style.TransitionDuration.IsEmpty)
                 {
@@ -1637,7 +1664,7 @@ namespace Fiber.UIElements
                         style.TransitionDuration.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _transitionDurationWorkLoopItem = new(style.TransitionDuration);
+                _transitionDurationWorkLoopItem = new WorkLoopTimeValuesProp(style.TransitionDuration);
 
                 if (!style.TransitionTimingFunction.IsEmpty)
                 {
@@ -1647,7 +1674,7 @@ namespace Fiber.UIElements
                         style.TransitionTimingFunction.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _transitionTimingFunctionWorkLoopItem = new(style.TransitionTimingFunction);
+                _transitionTimingFunctionWorkLoopItem = new WorkLoopEasingFunctionsProp(style.TransitionTimingFunction);
 
                 if (!style.TransformOrigin.IsEmpty)
                 {
@@ -1657,7 +1684,7 @@ namespace Fiber.UIElements
                         style.TransformOrigin.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _transformOriginWorkLoopItem = new(style.TransformOrigin);
+                _transformOriginWorkLoopItem = new WorkLoopStyleTransformOriginProp(style.TransformOrigin);
 
                 if (!style.Translate.IsEmpty)
                 {
@@ -1667,7 +1694,8 @@ namespace Fiber.UIElements
                         style.Translate.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _translateWorkLoopItem = new(style.Translate);
+                _translateWorkLoopItem = new WorkLoopStyleTranslateProp(style.Translate);
+
 
                 if (!style.Scale.IsEmpty)
                 {
@@ -1677,7 +1705,17 @@ namespace Fiber.UIElements
                         style.Scale.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _scaleWorkLoopItem = new(style.Scale);
+                _scaleWorkLoopItem = new WorkLoopStyleScaleProp(style.Scale);
+
+                if (!style.UnityMaterial.IsEmpty)
+                {
+                    Instance.style.unityMaterial = style.UnityMaterial.Get();
+                    if (style.UnityMaterial.IsSignal)
+                    {
+                        style.UnityMaterial.SignalProp.Signal.RegisterDependent(this);
+                    }
+                }
+                _unityMaterialWorkLoopItem = new WorkLoopStyleMaterialDefinitionProp(style.UnityMaterial);
 
                 if (!style.Rotate.IsEmpty)
                 {
@@ -1687,7 +1725,7 @@ namespace Fiber.UIElements
                         style.Rotate.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _rotateWorkLoopItem = new(style.Rotate);
+                _rotateWorkLoopItem = new WorkLoopStyleRotateProp(style.Rotate);
 
                 if (!style.Opacity.IsEmpty)
                 {
@@ -1697,7 +1735,7 @@ namespace Fiber.UIElements
                         style.Opacity.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _opacityWorkLoopItem = new(style.Opacity);
+                _opacityWorkLoopItem = new WorkLoopStyleFloatProp(style.Opacity);
 
                 if (!style.Overflow.IsEmpty)
                 {
@@ -1707,7 +1745,7 @@ namespace Fiber.UIElements
                         style.Overflow.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _overflowWorkLoopItem = new(style.Overflow);
+                _overflowWorkLoopItem = new WorkLoopOverflowProp(style.Overflow);
 
                 if (!style.TextOverflow.IsEmpty)
                 {
@@ -1717,7 +1755,7 @@ namespace Fiber.UIElements
                         style.TextOverflow.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _textOverflowWorkLoopItem = new(style.TextOverflow);
+                _textOverflowWorkLoopItem = new WorkLoopTextOverflowProp(style.TextOverflow);
 
                 if (!style.WhiteSpace.IsEmpty)
                 {
@@ -1727,7 +1765,7 @@ namespace Fiber.UIElements
                         style.WhiteSpace.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _whiteSpaceWorkLoopItem = new(style.WhiteSpace);
+                _whiteSpaceWorkLoopItem = new WorkLoopWhiteSpaceProp(style.WhiteSpace);
 
                 if (!style.Visibility.IsEmpty)
                 {
@@ -1737,7 +1775,7 @@ namespace Fiber.UIElements
                         style.Visibility.SignalProp.Signal.RegisterDependent(this);
                     }
                 }
-                _visibilityWorkLoopItem = new(style.Visibility);
+                _visibilityWorkLoopItem = new WorkLoopVisibilityProp(style.Visibility);
 
             }
             if (!virtualNode.Name.IsEmpty)
@@ -1747,7 +1785,7 @@ namespace Fiber.UIElements
                 {
                     virtualNode.Name.Signal.RegisterDependent(this);
                 }
-                _nameWorkLoopItem = new(virtualNode.Name);
+                _nameWorkLoopItem = new WorkLoopSignalProp<string>(virtualNode.Name);
             }
             if (!virtualNode.PickingMode.IsEmpty)
             {
@@ -1756,17 +1794,17 @@ namespace Fiber.UIElements
                 {
                     virtualNode.PickingMode.Signal.RegisterDependent(this);
                 }
-                _pickingModeWorkLoopItem = new(virtualNode.PickingMode);
+                _pickingModeWorkLoopItem = new WorkLoopSignalProp<PickingMode>(virtualNode.PickingMode);
             }
             if (virtualNode.OnClick != null)
             {
-                instance.RegisterCallback<ClickEvent>(virtualNode.OnClick);
+                instance.RegisterCallback(virtualNode.OnClick);
             }
 
             if (!virtualNode.ClassName.IsEmpty)
             {
                 var names = virtualNode.ClassName.Get();
-                _previousClassNameList = names != null ? new(names.Count) : new();
+                _previousClassNameList = names != null ? new List<string>(names.Count) : new List<string>();
                 for (var i = 0; names != null && i < names.Count; i++)
                 {
                     var name = names[i];
@@ -1777,9 +1815,11 @@ namespace Fiber.UIElements
                 {
                     virtualNode.ClassName.Signal.RegisterDependent(this);
                 }
-                _classNameWorkLoopItem = new(virtualNode.ClassName);
+                _classNameWorkLoopItem = new WorkLoopSignalProp<List<string>>(virtualNode.ClassName);
             }
         }
+        public VisualElement Instance { get; }
+        private bool IsVisible_SetByFiber { get; set; }
 
         public override void SetVisible(bool visible)
         {
@@ -1829,13 +1869,10 @@ namespace Fiber.UIElements
                 {
                     return style.Display.Get();
                 }
-                else
-                {
-                    return StyleKeyword.Initial;
-                }
+                return StyleKeyword.Initial;
             }
             // Handle if the style prop is a value (with individual values / signals as its props)
-            else if (_styleWorkLoopItem.IsValue)
+            if (_styleWorkLoopItem.IsValue)
             {
                 if (_displayWorkLoopItem.WorkLoopSignalProp.IsEmpty)
                 {
@@ -1874,13 +1911,10 @@ namespace Fiber.UIElements
                 {
                     return style.Opacity.Get();
                 }
-                else
-                {
-                    return StyleKeyword.Initial;
-                }
+                return StyleKeyword.Initial;
             }
             // Handle if the style prop is a value (with individual values / signals as its props)
-            else if (_styleWorkLoopItem.IsValue)
+            if (_styleWorkLoopItem.IsValue)
             {
                 if (_opacityWorkLoopItem.WorkLoopSignalProp.IsEmpty)
                 {
@@ -1919,13 +1953,10 @@ namespace Fiber.UIElements
                 {
                     return style.Visibility.Get();
                 }
-                else
-                {
-                    return StyleKeyword.Initial;
-                }
+                return StyleKeyword.Initial;
             }
             // Handle if the style prop is a value (with individual values / signals as its props)
-            else if (_styleWorkLoopItem.IsValue)
+            if (_styleWorkLoopItem.IsValue)
             {
                 if (_visibilityWorkLoopItem.WorkLoopSignalProp.IsEmpty)
                 {
@@ -1964,13 +1995,10 @@ namespace Fiber.UIElements
                 {
                     return style.Translate.Get();
                 }
-                else
-                {
-                    return StyleKeyword.Initial;
-                }
+                return StyleKeyword.Initial;
             }
             // Handle if the style prop is a value (with individual values / signals as its props)
-            else if (_styleWorkLoopItem.IsValue)
+            if (_styleWorkLoopItem.IsValue)
             {
                 if (_translateWorkLoopItem.WorkLoopSignalProp.IsEmpty)
                 {
@@ -4018,6 +4046,7 @@ namespace Fiber.UIElements
                 {
                     Instance.style.scale = StyleKeyword.Initial;
                 }
+
                 // Scale - Register / unregister dependant signals
                 if (_styleWorkLoopItem.IsSignal)
                 {
@@ -4033,6 +4062,44 @@ namespace Fiber.UIElements
                         }
                     }
                 }
+
+                // Unity Material - Update instance value
+                if (style.UnityMaterial.IsSignal)
+                {
+                    if (_unityMaterialWorkLoopItem.Check())
+                    {
+                        Instance.style.unityMaterial = _unityMaterialWorkLoopItem.Get();
+                    }
+                }
+                else if (style.UnityMaterial.IsValue)
+                {
+                    var value = style.UnityMaterial.Get();
+                    if (Instance.style.unityMaterial != value)
+                    {
+                        Instance.style.unityMaterial = value;
+                    }
+                }
+                else if (style.UnityMaterial.IsEmpty && !_lastStyleFromSignal.UnityMaterial.IsEmpty)
+                {
+                    Instance.style.unityMaterial = StyleKeyword.Initial;
+                }
+
+                // Unity Material - Register / unregister dependant signals
+                if (_styleWorkLoopItem.IsSignal)
+                {
+                    if (_lastStyleFromSignal.UnityMaterial.SignalProp.Signal != style.UnityMaterial.SignalProp.Signal)
+                    {
+                        if (_lastStyleFromSignal.UnityMaterial.IsSignal)
+                        {
+                            _lastStyleFromSignal.UnityMaterial.SignalProp.Signal.UnregisterDependent(this);
+                        }
+                        if (style.UnityMaterial.IsSignal)
+                        {
+                            style.UnityMaterial.SignalProp.Signal.RegisterDependent(this);
+                        }
+                    }
+                }
+
 
                 // Rotate - Update instance value
                 if (style.Rotate.IsSignal)
@@ -4487,6 +4554,10 @@ namespace Fiber.UIElements
             {
                 _scaleWorkLoopItem.WorkLoopSignalProp.SignalProp.Signal.UnregisterDependent(this);
             }
+            if (_unityMaterialWorkLoopItem.WorkLoopSignalProp.IsSignal)
+            {
+                _unityMaterialWorkLoopItem.WorkLoopSignalProp.SignalProp.Signal.UnregisterDependent(this);
+            }
             if (_rotateWorkLoopItem.WorkLoopSignalProp.IsSignal)
             {
                 _rotateWorkLoopItem.WorkLoopSignalProp.SignalProp.Signal.UnregisterDependent(this);
@@ -4525,21 +4596,90 @@ namespace Fiber.UIElements
                 _classNameWorkLoopItem.SignalProp.Signal.UnregisterDependent(this);
             }
         }
+        #region styles
+        private WorkLoopSignalProp<Style> _styleWorkLoopItem;
+        private Style _lastStyleFromSignal;
+        private WorkLoopPositionProp _positionWorkLoopItem;
+        private WorkLoopStyleLengthProp _rightWorkLoopItem;
+        private WorkLoopStyleLengthProp _bottomWorkLoopItem;
+        private WorkLoopStyleLengthProp _leftWorkLoopItem;
+        private WorkLoopStyleLengthProp _topWorkLoopItem;
+        private WorkLoopStyleLengthProp _paddingRightWorkLoopItem;
+        private WorkLoopStyleLengthProp _paddingBottomWorkLoopItem;
+        private WorkLoopStyleLengthProp _paddingLeftWorkLoopItem;
+        private WorkLoopStyleLengthProp _paddingTopWorkLoopItem;
+        private WorkLoopStyleLengthProp _marginRightWorkLoopItem;
+        private WorkLoopStyleLengthProp _marginBottomWorkLoopItem;
+        private WorkLoopStyleLengthProp _marginLeftWorkLoopItem;
+        private WorkLoopStyleLengthProp _marginTopWorkLoopItem;
+        private WorkLoopStyleLengthProp _borderTopRightRadiusWorkLoopItem;
+        private WorkLoopStyleLengthProp _borderTopLeftRadiusWorkLoopItem;
+        private WorkLoopStyleLengthProp _borderBottomRightRadiusWorkLoopItem;
+        private WorkLoopStyleLengthProp _borderBottomLeftRadiusWorkLoopItem;
+        private WorkLoopStyleFloatProp _borderRightWidthWorkLoopItem;
+        private WorkLoopStyleFloatProp _borderBottomWidthWorkLoopItem;
+        private WorkLoopStyleFloatProp _borderLeftWidthWorkLoopItem;
+        private WorkLoopStyleFloatProp _borderTopWidthWorkLoopItem;
+        private WorkLoopStyleColorProp _borderRightColorWorkLoopItem;
+        private WorkLoopStyleColorProp _borderBottomColorWorkLoopItem;
+        private WorkLoopStyleColorProp _borderLeftColorWorkLoopItem;
+        private WorkLoopStyleColorProp _borderTopColorWorkLoopItem;
+        private WorkLoopDisplayStyleProp _displayWorkLoopItem;
+        private WorkLoopStyleFloatProp _flexShrinkWorkLoopItem;
+        private WorkLoopStyleFloatProp _flexGrowWorkLoopItem;
+        private readonly WorkLoopFlexDirectionProp _flexDirectionWorkLoopItem;
+        private WorkLoopJustifyProp _justifyContentWorkLoopItem;
+        private WorkLoopAlignProp _alignItemsWorkLoopItem;
+        private WorkLoopWrapProp _flexWrapWorkLoopItem;
+        private WorkLoopStyleLengthProp _widthWorkLoopItem;
+        private WorkLoopStyleLengthProp _maxWidthWorkLoopItem;
+        private WorkLoopStyleLengthProp _minWidthWorkLoopItem;
+        private WorkLoopStyleLengthProp _heightWorkLoopItem;
+        private WorkLoopStyleLengthProp _maxHeightWorkLoopItem;
+        private WorkLoopStyleLengthProp _minHeightWorkLoopItem;
+        private WorkLoopStyleColorProp _backgroundColorWorkLoopItem;
+        private WorkLoopStyleColorProp _colorWorkLoopItem;
+        private WorkLoopStyleLengthProp _fontSizeWorkLoopItem;
+        private WorkLoopStyleFontProp _unityFontWorkLoopItem;
+        private WorkLoopStyleFontDefinitionProp _unityFontDefinitionWorkLoopItem;
+        private WorkLoopFontStyleProp _unityFontStyleWorkLoopItem;
+        private WorkLoopStyleLengthProp _unityParagraphSpacingWorkLoopItem;
+        private WorkLoopTextAnchorProp _unityTextAlignWorkLoopItem;
+        private WorkLoopStyleFloatProp _unityTextOutlineWidthWorkLoopItem;
+        private WorkLoopStyleColorProp _unityTextOutlineColorWorkLoopItem;
+        private WorkLoopStylePropertyNamesProp _transitionPropertyWorkLoopItem;
+        private WorkLoopTimeValuesProp _transitionDelayWorkLoopItem;
+        private WorkLoopTimeValuesProp _transitionDurationWorkLoopItem;
+        private WorkLoopEasingFunctionsProp _transitionTimingFunctionWorkLoopItem;
+        private WorkLoopStyleTransformOriginProp _transformOriginWorkLoopItem;
+        private WorkLoopStyleTranslateProp _translateWorkLoopItem;
+        private WorkLoopStyleScaleProp _scaleWorkLoopItem;
+        private WorkLoopStyleRotateProp _rotateWorkLoopItem;
+        private WorkLoopStyleFloatProp _opacityWorkLoopItem;
+        private WorkLoopOverflowProp _overflowWorkLoopItem;
+        private WorkLoopTextOverflowProp _textOverflowWorkLoopItem;
+        private WorkLoopWhiteSpaceProp _whiteSpaceWorkLoopItem;
+        private WorkLoopVisibilityProp _visibilityWorkLoopItem;
+        private WorkLoopStyleMaterialDefinitionProp _unityMaterialWorkLoopItem;
+        #endregion
     }
 
-    public class UIDocumentNativeNode : GameObjectNativeNode
+    public class PanelRendererNativeNode : GameObjectNativeNode
     {
-        private readonly UIDocument _uiDocument;
-        private WorkLoopSignalProp<float> _sortingOrderWorkLoopItem;
+        private readonly PanelRenderer _panelRenderer;
+        private readonly Queue<Action<VisualElement>> _queuedOperations = new();
         private readonly VisibilityStyleProp _setVisibilityStyleProp;
+        private VisualElement _rootVisualElement;
+        private WorkLoopSignalProp<int> _sortingOrderWorkLoopItem;
+        private bool _visibleSetByFiber;
 
-        public UIDocumentNativeNode(
-            UIDocumentComponent component,
-            UIDocument uiDocument,
+        public PanelRendererNativeNode(
+            PanelRendererComponent component,
+            PanelRenderer panelRenderer,
             UIElementsRendererExtension renderer
-        ) : base(component, uiDocument.gameObject)
+        ) : base(component, panelRenderer.gameObject)
         {
-            _uiDocument = uiDocument;
+            _panelRenderer = panelRenderer;
 
             if (renderer.DefaultSetVisibilityStyleProp != VisibilityStyleProp.None)
             {
@@ -4552,87 +4692,137 @@ namespace Fiber.UIElements
 
             if (!component.SortingOrder.IsEmpty)
             {
-                uiDocument.sortingOrder = component.SortingOrder.Get();
+                panelRenderer.sortingOrder = component.SortingOrder.Get();
                 if (component.SortingOrder.IsSignal)
                 {
                     component.SortingOrder.Signal.RegisterDependent(this);
                 }
-                _sortingOrderWorkLoopItem = new(component.SortingOrder);
+                _sortingOrderWorkLoopItem = new WorkLoopSignalProp<int>(component.SortingOrder);
             }
 
             if (component.UsageHints != UsageHints.None)
             {
-                uiDocument.rootVisualElement.usageHints = component.UsageHints;
+                _queuedOperations.Enqueue(element => { element.usageHints = component.UsageHints; });
+            }
+            panelRenderer.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        private void OnUIReload(PanelRenderer panelRenderer, VisualElement root, int version)
+        {
+            _rootVisualElement = root;
+            while (_queuedOperations.TryDequeue(out var head))
+            {
+                head(_rootVisualElement);
             }
         }
 
         public override void SetVisible(bool visible)
         {
-            // Don't set UIDocument to inactive, since that will destroy the root visual element.
+            // Don't set PanelRenderer to inactive, since that will destroy the root visual element.
             // See this thread for more info: https://forum.unity.com/threads/does-uidocument-clear-contents-when-disabled.1097659/
-            IsVisible_SetByFiber = true;
-
-            var root = _uiDocument.rootVisualElement;
-            switch (_setVisibilityStyleProp)
+            void SetVisibleImpl(VisualElement root)
             {
-                case VisibilityStyleProp.Display:
-                    root.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-                    break;
-                case VisibilityStyleProp.Visibility:
-                    root.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;
-                    break;
-                case VisibilityStyleProp.Opacity:
-                    root.style.opacity = visible ? 1 : 0;
-                    break;
-                case VisibilityStyleProp.Translate:
-                    root.style.translate = visible ? Translate.None() : new Translate(-5000, -5000);
-                    break;
-                default:
-                    throw new Exception($"Unknown visibility style prop: {_setVisibilityStyleProp}");
+                IsVisible_SetByFiber = true;
+                switch (_setVisibilityStyleProp)
+                {
+                    case VisibilityStyleProp.Display:
+                        root.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+                        break;
+                    case VisibilityStyleProp.Visibility:
+                        root.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;
+                        break;
+                    case VisibilityStyleProp.Opacity:
+                        root.style.opacity = visible ? 1 : 0;
+                        break;
+                    case VisibilityStyleProp.Translate:
+                        root.style.translate = visible ? Translate.None() : new Translate(-5000, -5000);
+                        break;
+                    default:
+                        throw new Exception($"Unknown visibility style prop: {_setVisibilityStyleProp}");
+                }
+            }
+
+            if (_rootVisualElement == null)
+            {
+                _queuedOperations.Enqueue(SetVisibleImpl);
+            }
+            else
+            {
+                SetVisibleImpl(_rootVisualElement);
             }
         }
 
         public override void AddChild(FiberNode node, int index)
         {
-            if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
+            void AddChildImpl(VisualElement root)
             {
-                _uiDocument.rootVisualElement.Insert(index, visualElementChildNode.Instance);
-                return;
+                if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
+                {
+                    root.Insert(index, visualElementChildNode.Instance);
+                    return;
+                }
+                base.AddChild(node, index);
             }
-
-            base.AddChild(node, index);
+            if (_rootVisualElement == null)
+            {
+                _queuedOperations.Enqueue(AddChildImpl);
+            }
+            else
+            {
+                AddChildImpl(_rootVisualElement);
+            }
         }
 
         public override void RemoveChild(FiberNode node, bool destroyInstance)
         {
-            if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
+            void RemoveChildImpl(VisualElement root)
             {
-                visualElementChildNode.Instance.parent.Remove(visualElementChildNode.Instance);
-                return;
-            }
+                if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
+                {
+                    root.Remove(visualElementChildNode.Instance);
+                    return;
+                }
 
-            base.RemoveChild(node, destroyInstance);
+                base.RemoveChild(node, destroyInstance);
+            }
+            if (_rootVisualElement == null)
+            {
+                _queuedOperations.Enqueue(RemoveChildImpl);
+            }
+            else
+            {
+                RemoveChildImpl(_rootVisualElement);
+            }
         }
 
         public override void MoveChild(FiberNode node, int index)
         {
-            if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
+            void MoveChildImpl(VisualElement root)
             {
-                var currentIndex = _uiDocument.rootVisualElement.IndexOf(visualElementChildNode.Instance);
-                if (currentIndex > index)
+                if (node.NativeNode is VisualElementNativeNode visualElementChildNode)
                 {
-                    var currentElementAtIndex = _uiDocument.rootVisualElement.ElementAt(index);
-                    visualElementChildNode.Instance.PlaceBehind(currentElementAtIndex);
+                    var currentIndex = root.IndexOf(visualElementChildNode.Instance);
+                    if (currentIndex > index)
+                    {
+                        var currentElementAtIndex = root.ElementAt(index);
+                        visualElementChildNode.Instance.PlaceBehind(currentElementAtIndex);
+                    }
+                    else if (currentIndex < index)
+                    {
+                        var currentElementBeforeIndex = root.ElementAt(index - 1);
+                        visualElementChildNode.Instance.PlaceInFront(currentElementBeforeIndex);
+                    }
                 }
-                else if (currentIndex < index)
-                {
-                    var currentElementBeforeIndex = _uiDocument.rootVisualElement.ElementAt(index - 1);
-                    visualElementChildNode.Instance.PlaceInFront(currentElementBeforeIndex);
-                }
-                return;
+                base.MoveChild(node, index);
             }
-
-            base.MoveChild(node, index);
+            if (_rootVisualElement == null)
+            {
+                _queuedOperations.Enqueue(MoveChildImpl);
+            }
+            else
+            {
+                MoveChildImpl(_rootVisualElement);
+            }
         }
 
         public override void Update()
@@ -4640,7 +4830,7 @@ namespace Fiber.UIElements
             base.Update();
             if (_sortingOrderWorkLoopItem.Check())
             {
-                _uiDocument.sortingOrder = _sortingOrderWorkLoopItem.Get();
+                _panelRenderer.sortingOrder = _sortingOrderWorkLoopItem.Get();
             }
         }
 
@@ -4657,32 +4847,30 @@ namespace Fiber.UIElements
 
     public class UIElementsRendererExtension : GameObjectsRendererExtension
     {
-        public PanelSettings DefaultPanelSettings { get; private set; }
-        public VisibilityStyleProp DefaultSetVisibilityStyleProp { get; private set; }
-
         public UIElementsRendererExtension(
             PanelSettings defaultPanelSettings = null,
             VisibilityStyleProp defaultSetVisibilityStyleProp = VisibilityStyleProp.None
         )
-        : base()
         {
             DefaultPanelSettings = defaultPanelSettings;
             DefaultSetVisibilityStyleProp = defaultSetVisibilityStyleProp;
         }
+        public PanelSettings DefaultPanelSettings { get; }
+        public VisibilityStyleProp DefaultSetVisibilityStyleProp { get; }
 
         public override NativeNode CreateNativeNode(FiberNode fiberNode)
         {
             var virtualNode = fiberNode.VirtualNode;
 
-            if (virtualNode is UIDocumentComponent uiDocumentComponent)
+            if (virtualNode is PanelRendererComponent panelRendererComponent)
             {
-                var gameObject = GetOrCreateGameObject(fiberNode, uiDocumentComponent);
-                if (!gameObject.TryGetComponent<UIDocument>(out var uiDocument))
+                var gameObject = GetOrCreateGameObject(fiberNode, panelRendererComponent);
+                if (!gameObject.TryGetComponent<PanelRenderer>(out var panelRenderer))
                 {
-                    uiDocument = gameObject.AddComponent<UIDocument>();
+                    panelRenderer = gameObject.AddComponent<PanelRenderer>();
                 }
 
-                uiDocument.panelSettings = uiDocumentComponent.PanelSettings ?? DefaultPanelSettings;
+                panelRenderer.panelSettings = panelRendererComponent.PanelSettings ?? DefaultPanelSettings;
 
                 var scalingProvider = fiberNode.FindClosesVirtualNode<ScalingProviderComponent>();
                 if (scalingProvider != null)
@@ -4696,15 +4884,15 @@ namespace Fiber.UIElements
                     // From testing it seems like Screen.dpi returns 96 * window.devicePixelRatio. 
                     // In web builds Screen.width and Screen.height are in CSS pixels, which are density-independent
                     // By setting reference dpi to 96f, 1px in Unity Toolkit will be 1px in CSS pixels
-                    uiDocument.panelSettings.referenceDpi = scalingProvider.ReferenceDPI / scalingProvider.Multiplier;
+                    panelRenderer.panelSettings.referenceDpi = scalingProvider.ReferenceDPI / scalingProvider.Multiplier;
 #else
-                    uiDocument.panelSettings.referenceDpi = scalingProvider.ReferenceDPI / scalingProvider.Multiplier;
+                    panelRenderer.panelSettings.referenceDpi = scalingProvider.ReferenceDPI / scalingProvider.Multiplier;
 #endif
-                    uiDocument.panelSettings.fallbackDpi = dpi / scalingProvider.Multiplier;
+                    panelRenderer.panelSettings.fallbackDpi = dpi / scalingProvider.Multiplier;
                 }
-                return new UIDocumentNativeNode(uiDocumentComponent, uiDocument, this);
+                return new PanelRendererNativeNode(panelRendererComponent, panelRenderer, this);
             }
-            else if (virtualNode is ScrollViewComponent scrollViewComponent)
+            if (virtualNode is ScrollViewComponent scrollViewComponent)
             {
                 var scrollView = new ScrollView();
                 if (scrollViewComponent.UsageHints != UsageHints.None)
@@ -4713,7 +4901,7 @@ namespace Fiber.UIElements
                 }
                 return new ScrollViewNativeNode(scrollViewComponent, scrollView, this);
             }
-            else if (virtualNode is TextFieldComponent textFieldComponent)
+            if (virtualNode is TextFieldComponent textFieldComponent)
             {
                 var textField = new TextField();
                 if (textFieldComponent.UsageHints != UsageHints.None)
@@ -4722,7 +4910,7 @@ namespace Fiber.UIElements
                 }
                 return new TextFieldNativeNode(textFieldComponent, textField, this);
             }
-            else if (virtualNode is TextComponent textComponent)
+            if (virtualNode is TextComponent textComponent)
             {
                 var textElement = new TextElement();
                 if (textComponent.UsageHints != UsageHints.None)
@@ -4731,7 +4919,7 @@ namespace Fiber.UIElements
                 }
                 return new TextElementNativeNode(textComponent, textElement, this);
             }
-            else if (virtualNode is ButtonComponent buttonComponent)
+            if (virtualNode is ButtonComponent buttonComponent)
             {
                 var button = new Button();
                 if (buttonComponent.UsageHints != UsageHints.None)
@@ -4740,7 +4928,7 @@ namespace Fiber.UIElements
                 }
                 return new ButtonNativeNode(buttonComponent, button, this);
             }
-            else if (virtualNode is ImageComponent imageComponent)
+            if (virtualNode is ImageComponent imageComponent)
             {
                 var image = new Image();
                 if (imageComponent.UsageHints != UsageHints.None)
@@ -4749,9 +4937,9 @@ namespace Fiber.UIElements
                 }
                 return new ImageNativeNode(imageComponent, image, this);
             }
-            else if (virtualNode is ViewComponent viewComponent)
+            if (virtualNode is ViewComponent viewComponent)
             {
-                var visualElement = viewComponent.CreateInstance != null ? viewComponent.CreateInstance()  : new VisualElement();
+                var visualElement = viewComponent.CreateInstance != null ? viewComponent.CreateInstance() : new VisualElement();
                 if (viewComponent.UsageHints != UsageHints.None)
                 {
                     visualElement.usageHints = viewComponent.UsageHints;
@@ -4766,7 +4954,7 @@ namespace Fiber.UIElements
         {
             var type = virtualNode.GetType();
 
-            return type == typeof(UIDocumentComponent)
+            return type == typeof(PanelRendererComponent)
                 || type == typeof(ScrollViewComponent)
                 || type == typeof(TextFieldComponent)
                 || type == typeof(TextComponent)

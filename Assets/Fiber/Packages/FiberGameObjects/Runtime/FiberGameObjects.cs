@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 using Signals;
+using UnityEngine;
 
 namespace Fiber.GameObjects
 {
@@ -12,7 +11,7 @@ namespace Fiber.GameObjects
             string id
         )
         {
-            return new GameObjectPortalDestinationComponent(id: id);
+            return new GameObjectPortalDestinationComponent(id);
         }
 
         public static GameObjectComponent GameObject(
@@ -31,8 +30,8 @@ namespace Fiber.GameObjects
         )
         {
             return new GameObjectComponent(
-                name: name,
-                active: active,
+                name,
+                active,
                 _ref: _ref,
                 position: position,
                 localScale: localScale,
@@ -65,31 +64,12 @@ namespace Fiber.GameObjects
         public VirtualBody Render(FiberNode fiberNode)
         {
             BaseImplementation(fiberNode);
-            return new GameObjectComponent(name: $"PortalDestination_{_id}");
+            return new GameObjectComponent($"PortalDestination_{_id}");
         }
     }
 
     public class GameObjectComponent : VirtualNode
     {
-        public SignalProp<string> Name { get; private set; }
-        public SignalProp<bool> Active { get; private set; }
-
-        public SignalProp<Vector3> Position { get; private set; }
-        public SignalProp<Vector3> LocalScale { get; private set; }
-
-        public PrimitiveType? PrimitiveType { get; private set; }
-
-        public Ref<GameObject> Ref { get; set; }
-        public Action<GameObject> OnCreateRef { get; set; }
-        // At a glance it might seem that this can be replaced with an effect. However, an effect in a component
-        // that is defining a GameObjectComponent will run before we mount the GameObjectComponent, which means
-        // that it is not enabled and not attached to its parent yet. 
-        public Action<GameObject> OnMount { get; set; }
-
-        // Function that is called when creating the instance. Can be used for using already existing game objects instead of creating new ones.
-        public Func<GameObject, GameObject> CreateInstance { get; set; }
-        public Action<GameObject> DestroyInstance { get; set; }
-
         public GameObjectComponent(VirtualBody children) : base(children, VirtualNodeType.CustomComponent) { }
 
         public GameObjectComponent(
@@ -121,16 +101,32 @@ namespace Fiber.GameObjects
             CreateInstance = createInstance;
             DestroyInstance = destroyInstance;
         }
+        public SignalProp<string> Name { get; }
+        public SignalProp<bool> Active { get; }
+
+        public SignalProp<Vector3> Position { get; }
+        public SignalProp<Vector3> LocalScale { get; }
+
+        public PrimitiveType? PrimitiveType { get; }
+
+        public Ref<GameObject> Ref { get; set; }
+        public Action<GameObject> OnCreateRef { get; set; }
+        // At a glance it might seem that this can be replaced with an effect. However, an effect in a component
+        // that is defining a GameObjectComponent will run before we mount the GameObjectComponent, which means
+        // that it is not enabled and not attached to its parent yet. 
+        public Action<GameObject> OnMount { get; set; }
+
+        // Function that is called when creating the instance. Can be used for using already existing game objects instead of creating new ones.
+        public Func<GameObject, GameObject> CreateInstance { get; set; }
+        public Action<GameObject> DestroyInstance { get; set; }
     }
 
     public class GameObjectNativeNode : NativeNode
     {
-        public GameObject Instance { get; private set; }
-        private WorkLoopSignalProp<string> _nameWorkLoopItem;
         private WorkLoopSignalProp<bool> _activeWorkLoopItem;
-        private WorkLoopSignalProp<Vector3> _positionWorkLoopItem;
         private WorkLoopSignalProp<Vector3> _localScaleWorkLoopItem;
-        protected bool IsVisible_SetByFiber { get; set; }
+        private WorkLoopSignalProp<string> _nameWorkLoopItem;
+        private WorkLoopSignalProp<Vector3> _positionWorkLoopItem;
 
         public GameObjectNativeNode(GameObjectComponent virtualNode, GameObject instance)
         {
@@ -143,7 +139,7 @@ namespace Fiber.GameObjects
                 {
                     virtualNode.Name.Signal.RegisterDependent(this);
                 }
-                _nameWorkLoopItem = new(virtualNode.Name);
+                _nameWorkLoopItem = new WorkLoopSignalProp<string>(virtualNode.Name);
             }
             if (!virtualNode.Active.IsEmpty)
             {
@@ -152,7 +148,7 @@ namespace Fiber.GameObjects
                 {
                     virtualNode.Active.Signal.RegisterDependent(this);
                 }
-                _activeWorkLoopItem = new(virtualNode.Active);
+                _activeWorkLoopItem = new WorkLoopSignalProp<bool>(virtualNode.Active);
             }
             if (!virtualNode.Position.IsEmpty)
             {
@@ -161,7 +157,7 @@ namespace Fiber.GameObjects
                 {
                     virtualNode.Position.Signal.RegisterDependent(this);
                 }
-                _positionWorkLoopItem = new(virtualNode.Position);
+                _positionWorkLoopItem = new WorkLoopSignalProp<Vector3>(virtualNode.Position);
             }
             if (!virtualNode.LocalScale.IsEmpty)
             {
@@ -170,7 +166,7 @@ namespace Fiber.GameObjects
                 {
                     virtualNode.LocalScale.Signal.RegisterDependent(this);
                 }
-                _localScaleWorkLoopItem = new(virtualNode.LocalScale);
+                _localScaleWorkLoopItem = new WorkLoopSignalProp<Vector3>(virtualNode.LocalScale);
             }
             if (virtualNode.Ref != null)
             {
@@ -181,6 +177,8 @@ namespace Fiber.GameObjects
                 virtualNode.OnCreateRef(instance);
             }
         }
+        public GameObject Instance { get; }
+        protected bool IsVisible_SetByFiber { get; set; }
 
         public override void SetVisible(bool visible)
         {
@@ -211,7 +209,7 @@ namespace Fiber.GameObjects
                 return;
             }
 
-            throw new Exception($"Trying to add child of unknown type {node.VirtualNode.GetType()} at index {index}.");
+            throw new Exception($"Trying to add child of unknown type {node.VirtualNode?.GetType()} at index {index}.");
         }
 
         public override void RemoveChild(FiberNode node, bool destroyInstance)
@@ -240,7 +238,7 @@ namespace Fiber.GameObjects
                 return;
             }
 
-            throw new Exception($"Trying to remove child of unknown type {node.VirtualNode.GetType()}.");
+            throw new Exception($"Trying to remove child of unknown type {node.VirtualNode?.GetType()}.");
         }
 
         public override void MoveChild(FiberNode node, int index)
@@ -298,10 +296,6 @@ namespace Fiber.GameObjects
 
     public class GameObjectsRendererExtension : RendererExtension
     {
-        public GameObjectsRendererExtension()
-        {
-        }
-
         protected GameObject GetOrCreateGameObject(FiberNode fiberNode, GameObjectComponent virtualNode)
         {
             GameObject gameObject = null;
